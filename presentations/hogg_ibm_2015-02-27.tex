@@ -21,11 +21,11 @@
 
 \newcommand{\conclusions}{%
 \begin{frame}
-  \frametitle{conclusions}
+  \frametitle{summary}
   \begin{itemize}
   \item exoplanet research is shaped by engineering and data analysis challenges
     \begin{itemize}
-    \item I am going to focus on these issues
+    \item I focus on these issues
     \end{itemize}
   \item \emph{search} involves extracting tiny, sparse signals from (huge) data sets
   \item \emph{characterization} leaves us with noisy individual-planet measurements
@@ -128,7 +128,14 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{causal ideas}
+  \frametitle{causal idea}
+  \begin{itemize}
+  \item if a star's behavior can be predicted confidently by
+    \emph{other stars} then that behavior must be being imprinted by
+    the spacecraft
+  \item using these ideas to separate spacecraft-induced from
+    intrinsic stellar variability (Wang \etal, in preparation)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -174,18 +181,22 @@
 \begin{frame}
   \frametitle{false positives and false negatives}
   \begin{itemize}
-  \item it is easy to figure out the false-negative rate
+  \item it is easy to figure out the \emph{false-negative} rate
     \begin{itemize}
     \item inject fake signals into the lightcurves, search
     \item inverse is called the ``efficiency'' or ``completeness''
     \end{itemize}
-  \item<2> it is \emph{impossible} to figure out the false-positive rate
+  \item<2> it is \emph{impossible} to figure out the \emph{false-positive} rate
     \begin{itemize}
     \item ground truth is known for no complete sample
+    \item need a model for all sources (instrumental and astrophysical) of false positive signals
     \item the most interesting objects are nearly impossible to follow up
     \end{itemize}
   \item<2> \emph{secret fact:}
     it looks like many of the most interesting exoplanet candidates may be false positives
+    \begin{itemize}
+    \item long periods, small radii
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -198,68 +209,56 @@
 \begin{frame}
   \frametitle{characterization: what can we measure?}
   \begin{itemize}
-  \item foo
+  \item easy: period, size ratio
+  \item hard: size, temperature, composition
     \begin{itemize}
-    \item bar
-    \item bar
+    \item We can't understand the exoplanets any better than we can understand the stars they orbit!
+    \item renewed interest in precision stellar astrophysics
     \end{itemize}
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
-  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{how do you use noisy measurements?}
   \begin{itemize}
-  \item foo
+  \item exoplanetary astronomers tend to think Bayesian
     \begin{itemize}
-    \item bar
-    \item bar
+    \item provide posterior information about exoplanet properties
     \end{itemize}
-  \item foo
+  \item we want to know about the \emph{population} of exoplanets
     \begin{itemize}
-    \item bar
-    \item bar
+    \item exoplanets are ``samples'' from this population
+    \item observations are distorted by samples from the noise process
     \end{itemize}
-  \item foo
+  \item usually think in terms of generative probabilistic model
+    \begin{itemize}
+    \item population parameters characterize the population model
+    \item population model generates exoplanet parameters
+    \item exoplanet parameters characterize one exoplanetary system model
+    \item exoplanetary system model (and noise model) generates the raw data
+    \end{itemize}
+  \item want to make \emph{noise-marginalized population inferences}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{hierarchical probabilistic modeling}
   \begin{itemize}
-  \item foo
+  \item if an observer gives us posterior information, it includes some \emph{prior}
+  \item our population model is a \emph{replacement} for that prior
     \begin{itemize}
-    \item bar
-    \item bar
+    \item so we want likelihood functions, not posterior samples
+    \item (likelihood \emph{functions} not maximum-likelihood parameters)
     \end{itemize}
-  \item foo
+  \item more applied math: importance sampling tricks
     \begin{itemize}
-    \item bar
-    \item bar
+    \item can re-weight posterior samples to use them like likelihood information
     \end{itemize}
-  \item foo
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{whatever}
-  \begin{itemize}
-  \item foo
+  \item the full model contains a lot of complicated detail
     \begin{itemize}
-    \item bar
-    \item bar
+    \item very flexible populations model with smoothness prior
+    \item bespoke elliptical slice sampling method for inference
+    \item original \kepler\ Mission data but independent Petigura \etal\ catalog and false-negative estimates
     \end{itemize}
-  \item foo
-    \begin{itemize}
-    \item bar
-    \item bar
-    \end{itemize}
-  \item foo
   \end{itemize}
 \end{frame}
 
