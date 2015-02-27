@@ -24,6 +24,9 @@
   \frametitle{conclusions}
   \begin{itemize}
   \item exoplanet research is shaped by engineering and data analysis challenges
+    \begin{itemize}
+    \item I am going to focus on these issues
+    \end{itemize}
   \item \emph{search} involves extracting tiny, sparse signals from (huge) data sets
   \item \emph{characterization} leaves us with noisy individual-planet measurements
   \item \emph{population inferences} require expensive noise propagation
@@ -32,7 +35,8 @@
     \end{itemize}
   \item Earth-like planets are plentiful in our Galaxy
     \begin{itemize}
-    \item few solar systems ``look like'' ours
+    \item a percent (or more) of Sun-like stars host Earth-like planets
+    \item however, few solar systems ``look like'' ours
     \item little is known about Jupiter-like planets
     \end{itemize}
   \end{itemize}
@@ -79,6 +83,9 @@
   \frametitle{the NASA \kepler\ K2 Mission}
   \begin{itemize}
   \item failure of reaction wheels led to worse pointing
+    \begin{itemize}
+    \item forced to stare at fields such that Solar torque is near zero
+    \end{itemize}
   \item staring at 12 fields for 80 days each
   \item all data immediately public
   \item finding exoplanets around lower-mass stars
@@ -121,6 +128,10 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{causal ideas}
+\end{frame}
+
+\begin{frame}
   \frametitle{noise modeling {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
   ~\hfill
   \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
@@ -143,6 +154,7 @@
     \item very fast linear algebra for Gaussian Processes
     \item Ambikasaran \etal, arXiv:1403.6015
     \item approximations that permit re-use of repeated calculation
+    \item exploit embarassing parallelization
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -156,8 +168,99 @@
   \includegraphics<4>[height=0.9\figureheight]{1502.04715/figures-periodic.pdf}
   \includegraphics<5>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
   \includegraphics<6>[height=0.9\figureheight]{1502.04715/figures-folded.pdf}
-  \includegraphics<7>[height=\figureheight]{1502.04715/figures-completeness.pdf}
-  \includegraphics<8>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+  \includegraphics<7>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{false positives and false negatives}
+  \begin{itemize}
+  \item it is easy to figure out the false-negative rate
+    \begin{itemize}
+    \item inject fake signals into the lightcurves, search
+    \item inverse is called the ``efficiency'' or ``completeness''
+    \end{itemize}
+  \item<2> it is \emph{impossible} to figure out the false-positive rate
+    \begin{itemize}
+    \item ground truth is known for no complete sample
+    \item the most interesting objects are nearly impossible to follow up
+    \end{itemize}
+  \item<2> \emph{secret fact:}
+    it looks like many of the most interesting exoplanet candidates may be false positives
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{search completeness {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-completeness.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{characterization: what can we measure?}
+  \begin{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{how do you use noisy measurements?}
+  \begin{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{hierarchical probabilistic modeling}
+  \begin{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{whatever}
+  \begin{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+    \begin{itemize}
+    \item bar
+    \item bar
+    \end{itemize}
+  \item foo
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
