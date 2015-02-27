@@ -1,8 +1,10 @@
 *~
 *.aux
+*.jpg
 *.log
 *.nav
 *.out
+*.png
 *.pdf
 *.snm
 *.toc

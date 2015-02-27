@@ -1,11 +1,11 @@
 \documentclass[pdftex]{beamer}
 %\input{vc}
 % 1.77778 is the ratio of 16 to 9
-%\setlength{\paperheight}{3.5in}
-%\setlength{\paperwidth}{1.77778\paperheight}
+\setlength{\paperheight}{3.5in}
+\setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
-\setlength{\paperheight}{4.0in}
-\setlength{\paperwidth}{1.33333\paperheight}
+%\setlength{\paperheight}{4.0in}
+%\setlength{\paperwidth}{1.33333\paperheight}
 \setlength{\textwidth}{0.85\paperwidth}
 % import the next thing *after* the papersize
 \input{./hogg_presentation} % hogg standard colors
@@ -41,6 +41,14 @@
   Tim~Morton~(Princeton),
   Bernhard~Sch\"olkopf~(MPI-IS),
   Dun~Wang~(NYU)
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ Mission}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{kepler/750603main_Ball_Kepler_A8468_275_lg_blog_main_horizontal.jpg}
+  \includegraphics<2>[height=\figureheight]{kepler/Kepler_FOV_hiRes.jpg}
+  \includegraphics<3>[height=\figureheight]{kepler/FirstLightLogInvertedPink_wslbld2400.jpg}
 \end{frame}
 
 \begin{frame}
@@ -89,6 +97,17 @@
   \item concept of train, validate, and test
   \item every situation will be \emph{bespoke}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<4>[height=\figureheight]{1406.3020/results-linear-radius.pdf}
+  \includegraphics<5>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<6>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
 \end{frame}
 
 \conclusions
