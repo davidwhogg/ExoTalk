@@ -1,0 +1,96 @@
+\documentclass[pdftex]{beamer}
+%\input{vc}
+% 1.77778 is the ratio of 16 to 9
+%\setlength{\paperheight}{3.5in}
+%\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+\setlength{\paperheight}{4.0in}
+\setlength{\paperwidth}{1.33333\paperheight}
+\setlength{\textwidth}{0.85\paperwidth}
+% import the next thing *after* the papersize
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Extra-solar planets: Search, characterization, and population inferences}
+\author[David W. Hogg (NYU)]{David W. Hogg \\
+  \textsl{\small Center for Cosmology and Particle Physics,
+                 New York University} \\
+  \textsl{\small Center for Data Science,
+                 New York University} \\
+  \textsl{\small Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
+\date{2015 February 27}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{conclusions}
+  \begin{itemize}
+  \item search
+  \item characterization
+  \item populations
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\conclusions
+
+\begin{frame}
+  \titlepage
+  in collaboration with:\\
+  \emph{Dan~Foreman-Mackey}~(NYU),
+  Ben~Montet~(Caltech),
+  Tim~Morton~(Princeton),
+  Bernhard~Sch\"olkopf~(MPI-IS),
+  Dun~Wang~(NYU)
+\end{frame}
+
+\begin{frame}
+  \frametitle{the paradox of precision astrophysics}
+  \begin{itemize}
+  \item models are incredibly \emph{explanatory}
+    \begin{itemize}
+    \item $\Lambda$CDM
+    \item stellar spectroscopy
+    \item helioseismology
+    \end{itemize}
+  \item and yet...
+  \item<2-> models are \emph{wrong} (ruled out) in detail
+    \begin{itemize}
+    \item $\chi^2 \gg \nu$
+    \item ``The $\chi^2$ statistic is a measure of the size of your data!''
+    \end{itemize}
+  \item<2-> missing physics, approximation, computation, \emph{gastrophysics}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{physics-driven models}
+  \begin{itemize}
+  \item put in everything you know
+    \begin{itemize}
+    \item gravity, atomic and molecular transitions, radiation
+    \end{itemize}
+  \item make approximations to make things computable
+    \begin{itemize}
+    \item subgrid models, mixing length, etc
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven models (my personal usage)}
+  \begin{itemize}
+  \item make use of things you \emph{strongly believe}
+    \begin{itemize}
+    \item noise model \& instrument resolution
+    \item causal structure (shared parameters)
+    \end{itemize}
+  \item capitalize on huge amounts of data
+  \item exceedingly flexible model
+  \item concept of train, validate, and test
+  \item every situation will be \emph{bespoke}
+  \end{itemize}
+\end{frame}
+
+\conclusions
+
+\end{document}
