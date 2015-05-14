@@ -1,0 +1,330 @@
+\documentclass[pdftex]{beamer}
+%\input{vc}
+% 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{3.5in}
+\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+%\setlength{\paperheight}{4.0in}
+%\setlength{\paperwidth}{1.33333\paperheight}
+\setlength{\textwidth}{0.85\paperwidth}
+% import the next thing *after* the papersize
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Extra-solar planets: Search, characterization, and population inferences}
+\author[David W. Hogg (NYU)]{David W. Hogg \\
+  \textsl{\small Center for Cosmology and Particle Physics,
+                 New York University} \\
+  \textsl{\small Center for Data Science,
+                 New York University} \\
+  \textsl{\small Max-Planck-Insitut f\"ur Astronomie, Heidelberg}}
+\date{2015 May 13}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{summary}
+  \begin{itemize}
+  \item exoplanet research is shaped by engineering and data analysis challenges
+    \begin{itemize}
+    \item I focus on these issues
+    \end{itemize}
+  \item \emph{search} involves extracting tiny, sparse signals from (huge) data sets
+    \begin{itemize}
+    \item noise modeling and marginalization of systematics
+    \end{itemize}
+  \item \emph{characterization} leaves us with noisy individual-planet measurements
+  \item \emph{population inferences} require expensive noise propagation
+    \begin{itemize}
+    \item hierarchical probabilistic inference
+    \end{itemize}
+  \item Earth-like planets are plentiful in our Galaxy
+    \begin{itemize}
+    \item a percent (or more) of Sun-like stars host Earth-like planets
+    \item the Solar System is not obviously typical in any way
+    \item little is known about Jupiter-like planets
+    \end{itemize}
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\conclusions
+
+\begin{frame}
+  \titlepage
+  in collaboration with:\\
+  \emph{Dan~Foreman-Mackey}~(NYU),
+  Ben~Montet~(Caltech),
+  Tim~Morton~(Princeton),
+  Bernhard~Sch\"olkopf~(MPI-IS),
+  Dun~Wang~(NYU)
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ Mission}
+  \begin{itemize}
+  \item stared at 150,000 stars for 4 years (30-min cadence)
+    \begin{itemize}
+    \item 70,000 measurements per star
+    \item all data completely public
+    \end{itemize}
+  \item looking for exoplanet transit signals
+  \item found \emph{thousands} of exoplanets (candidates)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ Mission}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{kepler/750603main_Ball_Kepler_A8468_275_lg_blog_main_horizontal.jpg}
+  \includegraphics<2>[height=\figureheight]{kepler/Kepler_FOV_hiRes.jpg}
+  \includegraphics<3>[height=\figureheight]{kepler/FirstLightLogInvertedPink_wslbld2400.jpg}
+  \includegraphics<4>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<5>[height=0.9\figureheight]{1502.04715/figures-folded.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ K2 Mission}
+  \begin{itemize}
+  \item failure of reaction wheels led to worse pointing
+    \begin{itemize}
+    \item forced to stare at fields such that Solar torque is near zero
+    \end{itemize}
+  \item staring at 12 fields for 80 days each
+  \item all data immediately public
+  \item finding exoplanets around lower-mass stars
+    \begin{itemize}
+    \item currently the longest list of K2 discoveries is from my group
+    \item Foreman-Mackey \etal, arXiv:1502.04715
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{an Earth-like transit signal}
+  \begin{itemize}
+  \item requires good alignment (percent-level)
+  \item Earth blocks $10^{-4}$ of the light from the Sun
+  \item it does this for 13 hours out of every 365.25 days
+  \item the Sun has stochastic variability with an amplitude larger than the signal
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{noise models}
+  \begin{itemize}
+  \item precision astrophysics is all about noise
+  \item stochastic variability of the Sun
+    \begin{itemize}
+    \item models of the Sun do not predict variability in detail
+    \item we use data-driven models (non-parametrics)
+    \item auto-regressive models, Gaussian Processes
+    \end{itemize}
+  \item spacecraft issues
+    \begin{itemize}
+    \item telescope pointing is not precise (especially for K2)
+    \item point-spread function and flat-field not known to sufficient precision
+    \item temperature changes
+    \item we make use of shared information across all stars
+    \end{itemize}
+  \item all of these noise sources are \emph{larger than the signals we care about}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{causal idea}
+  \begin{itemize}
+  \item if a star's behavior can be predicted confidently by
+    \emph{other stars} then that behavior must be being imprinted by
+    the spacecraft
+  \item using these ideas to separate spacecraft-induced from
+    intrinsic stellar variability (Wang \etal, in preparation)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{noise modeling {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp11.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<5>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp17.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanet search}
+  \begin{itemize}
+  \item enormous set of hypothesis tests
+    \begin{itemize}
+    \item extremely fine grid in period and phase
+    \item can't ``just'' use Fourier methods because of signal sparsity
+    \end{itemize}
+  \item very flexible noise model
+    \begin{itemize}
+    \item effectively thousands to millions of parameters per lightcurve
+    \item fully marginalize out the noise draw
+    \end{itemize}
+  \item clever applied mathematics
+    \begin{itemize}
+    \item very fast linear algebra for Gaussian Processes
+    \item Ambikasaran \etal, arXiv:1403.6015
+    \item approximations that permit re-use of repeated calculation
+    \item exploit embarassing parallelization
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2)$
+  \item<2-> $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B}$
+    \begin{itemize}
+    \item $B$ contains the $M=150$ (say) basis vectors
+    \item either $\Lambda\rightarrow\infty$ (permitted!) or choose $\Lambda$ sensibly
+    \item marginalizes (projects) out anything in the $B$ subspace
+    \end{itemize}
+  \item<3-> $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B} + K$
+    \begin{itemize}
+    \item $\displaystyle K_{nn'} = k(|t_{n} - t_{n'}|)$
+    \item for example, $\displaystyle K_{nn'} = a\,\exp -\frac{1}{2}\,\frac{[t_{n} - t_{n'}]^2}{\tau^2}$
+    \item marginalizes out smooth, nonlinear functions of time (a Gaussian Process)
+    \end{itemize}
+  \item<4-> These methods marginalize out (Gaussian) non-trivial noise models.
+    \begin{itemize}
+    \item equivalent to integrating over all noise draws consistent with the data
+    \item there are more extreme models that permit nonlinear functions of the $B$ vectors
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanet search {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=0.9\figureheight]{1502.04715/figures-corr.pdf}
+  \includegraphics<2>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<3>[height=0.9\figureheight]{1502.04715/figures-linear.pdf}
+  \includegraphics<4>[height=0.9\figureheight]{1502.04715/figures-periodic.pdf}
+  \includegraphics<5>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<6>[height=0.9\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<7>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{false positives and false negatives}
+  \begin{itemize}
+  \item it is easy to figure out the \emph{false-negative} rate
+    \begin{itemize}
+    \item inject fake signals into the lightcurves, search
+    \item complement is called the ``efficiency'' or ``completeness''
+    \end{itemize}
+  \item<2-> it is \emph{impossible} to figure out the \emph{false-positive} rate
+    \begin{itemize}
+    \item ground truth is known for no complete sample
+    \item need a model for all sources (instrumental and astrophysical) of false positive signals
+    \item the most interesting objects are nearly impossible to follow up
+    \end{itemize}
+  \item<3-> \emph{secret fact:}
+    it looks like many of the most interesting exoplanet candidates may be false positives
+    \begin{itemize}
+    \item long periods, small radii
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{search completeness {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-completeness.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{characterization: what can we measure?}
+  \begin{itemize}
+  \item easy: period, size ratio
+  \item hard: size, temperature, composition
+    \begin{itemize}
+    \item We can't understand the exoplanets any better than we can understand the stars they orbit!
+    \item renewed interest in precision stellar astrophysics
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{how do you use noisy measurements?}
+  \begin{itemize}
+  \item exoplanetary astronomers tend to think Bayesian
+    \begin{itemize}
+    \item provide posterior information about exoplanet properties
+    \end{itemize}
+  \item we want to know about the \emph{population} of exoplanets
+    \begin{itemize}
+    \item exoplanets are ``samples'' from this population
+    \item observations are distorted by samples from the noise process
+    \end{itemize}
+  \item usually think in terms of generative probabilistic model
+    \begin{itemize}
+    \item population parameters characterize the population model
+    \item population model generates exoplanet parameters
+    \item exoplanet parameters characterize one exoplanetary system model
+    \item exoplanetary system model (and noise model) generates the raw data
+    \end{itemize}
+  \item want to make \emph{noise-marginalized population inferences}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{hierarchical probabilistic modeling}
+  \begin{itemize}
+  \item if an observer gives us posterior information, it includes some \emph{prior}
+  \item our population model is a \emph{replacement} for that prior
+    \begin{itemize}
+    \item so we want likelihood functions, not posterior samples
+    \item (likelihood \emph{functions} not maximum-likelihood parameters)
+    \end{itemize}
+  \item more applied math: importance sampling tricks
+    \begin{itemize}
+    \item can re-weight posterior samples to use them like likelihood information
+    \end{itemize}
+  \item the full model contains a lot of complicated detail
+    \begin{itemize}
+    \item very flexible populations model with smoothness prior
+    \item bespoke elliptical slice sampling method for inference
+    \item original \kepler\ Mission data but independent Petigura \etal\ catalog and false-negative estimates
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{importance sampling}
+  \begin{itemize}
+  \item you can only combine observations of different exoplanets if you have \emph{likeihoods}
+  \item in reality you will have \emph{posteriors}
+    \begin{itemize}
+    \item for both bad reasons (laziness) good reasons (use of data-driven models)
+    \item tend to be made with a crazy prior $I_0$
+    \end{itemize}
+  \item replace the crazy prior $I_0$ with a population model $\alpha$ by
+    \begin{eqnarray}
+      p(y\given \alpha) &=& \frac{1}{Z}\,\int \frac{p(\theta\given y,\alpha)}{p(\theta\given y,I_0)}\,p(\theta\given y,I_0)\,\dd\theta
+      \\
+      &\approx& \frac{1}{Z}\sum_k \frac{p(\theta_k\given y,\alpha)}{p(\theta_k\given y,I_0)}
+    \end{eqnarray}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<4>[height=\figureheight]{1406.3020/results-linear-radius.pdf}
+  \includegraphics<5>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<6>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\conclusions
+
+\end{document}
