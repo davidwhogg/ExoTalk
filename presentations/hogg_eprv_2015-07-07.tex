@@ -1,0 +1,233 @@
+\documentclass[pdftex]{beamer}
+%\input{vc}
+% 1.77778 is the ratio of 16 to 9
+%\setlength{\paperheight}{2.5in} % going way small!
+%\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+\setlength{\paperheight}{3.0in} % way small!
+\setlength{\paperwidth}{1.33333\paperheight}
+\setlength{\textwidth}{0.85\paperwidth}
+% import the next thing *after* the papersize
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Flexible models for noise, variability, and systematics}
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA)}\\
+  \textsl{\footnotesize
+  in collaboration with:
+  Dan~Foreman-Mackey~\textsl{(UW)},
+  Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
+  Dun~Wang~\textsl{(NYU)}}}
+\date{EPRV / 2015 May 07}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{summary}
+  \begin{itemize}
+  \item Generalizations of chi-squared fitting can account for
+    systematics and correlated noise.
+  \item It is important to fit the noise simultaneously and
+    marginalize it out (thanks to Bayes).
+  \item Make heavy use of Gaussians.
+  \item The science data often deliver housekeeping meta data at
+    higher fidelity than any sensors
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{RV?}
+  \begin{itemize}
+  \item I am going to talk about \kepler.
+  \item I hope the parallels to RV work are clear.
+  \item Don't be shy about asking.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{itemize}
+  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+  \item It can be written as an inner product (with the noise inverse
+    covariance as metric).
+  \item If we are going to play with the noise (and we are), we must
+    include a ln(det) term.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{eqnarray}
+    \chi^2 &\equiv& \sum_i \frac{[y_i - m_i]^2}{\sigma_i^2}
+    \nonumber \\
+    \chi^2 &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m]
+    \nonumber \\
+    V &=& C
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{itemize}
+  \item If there are multiple sources of (Gaussian) noise, their
+    covariances add.
+  \item Adding new components to the noise variance tensor $V$ is
+    equivalent to fitting for other noise processes and marginalizing
+    them out.
+  \item This is literally as trivial as it sounds.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + Q
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    Q &=& \mbox{variance tensor of additional noise}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Causal idea}
+  \begin{itemize}
+  \item If a star's behavior can be predicted confidently by
+    \emph{other stars} then that behavior must be being imprinted by
+    the spacecraft.
+  \item We are using these ideas to separate spacecraft-induced from
+    intrinsic stellar variability (Wang \etal, in preparation;
+    Sch\"olkopf \etal, 1505.03036).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item The best predictors of a star (or pixel's) behavior are the
+    empirical behaviors of \emph{other stars} (or pixels).
+  \item The data \emph{are} the model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item Imagine that spacecraft pointing is the source of your
+    dominant systematic.
+  \item Imagine that you have light curves that are good to a part in
+    $10^5$, every one of which depends differently on pointing.
+  \item The light curves themselves contain the pointing information
+    at very high fidelity.
+  \item (Much higher fidelity than any measured centroid!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Imagine that we believe that the spacecraft systematics
+    (noise) can be modeled as a sum of $K$ basis vectors.
+  \item If we can put a Gaussian prior on the linear amplitudes, we
+    can fully represent this noise by adding in a rank-$K$ covariance
+    matrix.
+  \item This is equivalent to fitting and marginalizing!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + B\cdot\Lambda\cdot\transpose{B}
+    \nonumber \\
+    B &=& \mbox{block of $K$ basis vectors}
+    \nonumber \\
+    \Lambda &=& \mbox{$K\times K$ prior variance; can $\rightarrow\infty$}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{noise modeling {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp17.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Don't ``fit and subtract'' your systematics!
+  \item That isn't conservative.
+  \item Signals get distorted (Foreman-Mackey \etal, 1502.04715)
+  \item You need to marginalize out the noise.
+  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ is equivalent to
+    fitting the noise simultaneously and then marginalizing it out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussians are miraculous}
+  \begin{itemize}
+  \item ~[that is all]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar variability noise model}
+  \begin{itemize}
+  \item Imagine that we believe that stars vary stochastically but
+    continuously (with time correlations).
+  \item For any model of the amplitude and covariance of the
+    variations, we can construct a covariance matrix (to add in).
+  \item This is equivalent to fitting and marginalizing!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar variability noise model}
+g~ [equations here]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Again, don't ``fit and subtract'' the stellar variability!
+  \item Again, using $C + K$ is equivalent to fitting the stochastic
+    variability simultaneously and then marginalizing it out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel learning}
+  \begin{itemize}
+  \item Most uses of Gaussian Processes make use of kernel matrices
+    with made-up kernels.
+  \item There are enormous families of kernels constructable from
+    functions in the Fourier domain (eg, mixtures of Gaussians).
+  \item With the data we have, we should be learning the kernels, not
+    adopting convenient ones.
+  \end{itemize}
+\end{frame}
+
+\conclusions
+
+\end{document}
