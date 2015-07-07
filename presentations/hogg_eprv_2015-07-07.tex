@@ -11,13 +11,13 @@
 \input{./hogg_presentation} % hogg standard colors
 
 \title{Flexible models for noise, variability, and systematics}
-\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA)}\\
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA)}\\[1ex]
   \textsl{\footnotesize
-  in collaboration with:
-  Dan~Foreman-Mackey~\textsl{(UW)},
-  Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
-  Dun~Wang~\textsl{(NYU)}}}
-\date{EPRV / 2015 May 07}
+    in collaboration with:
+    Dan~Foreman-Mackey~\textsl{(UW)},
+    Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
+    Dun~Wang~\textsl{(NYU)}}}
+\date{\textsl{\#eprv} / 2015 July 07}
 
 \newcommand{\conclusions}{%
 \begin{frame}
@@ -27,9 +27,9 @@
     systematics and correlated noise.
   \item It is important to fit the noise simultaneously and
     marginalize it out (thanks to Bayes).
-  \item Make heavy use of Gaussians.
-  \item The science data often deliver housekeeping meta data at
-    higher fidelity than any sensors
+  \item Make heavy use of Gaussians---and don't be afraid of huge models.
+  \item (The science data often deliver housekeeping meta data at
+    higher fidelity than any sensors.)
   \end{itemize}
 \end{frame}}
 
@@ -80,6 +80,7 @@
 \begin{frame}
   \frametitle{reminder: $\chi^2$}
   \begin{itemize}
+  \item $\transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
   \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
   \item $V$ encodes your beliefs about your (Gaussian) noise.
   \end{itemize}
@@ -115,10 +116,10 @@
   \frametitle{Causal idea}
   \begin{itemize}
   \item If a star's behavior can be predicted confidently by
-    \emph{other stars} then that behavior must be being imprinted by
+    other stars, then that behavior must be being imprinted by
     the spacecraft.
   \item We are using these ideas to separate spacecraft-induced from
-    intrinsic stellar variability {\footnotesize (Wang \etal, in preparation;
+    intrinsic stellar variability {\footnotesize (Wang \etal, in prep;
     Sch\"olkopf \etal, 1505.03036)}.
   \end{itemize}
 \end{frame}
@@ -141,7 +142,7 @@
     $10^5$, every one of which depends differently on pointing.
   \item The light curves themselves contain the pointing information
     at very high fidelity.
-  \item (Much higher fidelity than any measured centroid!)
+  \item (Much higher fidelity than any measured centroids!)
   \end{itemize}
 \end{frame}
 
@@ -182,7 +183,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Systematic noise model {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  \frametitle{Systematic noise {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
   ~\hfill
   \includegraphics<1>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp10.pdf}
   \includegraphics<2>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp14.pdf}
@@ -195,13 +196,15 @@
   \begin{itemize}
   \item How do we set $\Lambda$?
   \item Learn it:  Maximum likelihood or Bayes.
+  \item (After all, we have a likelihood function!)
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Implementation details}
   \begin{itemize}
-  \item Use the Woodbury matrix inversion lemma.
+  \item For expressions like $C + B\cdot\Lambda\cdot\transpose{B}$
+    there are matrix inversion and determinant lemmas.
   \item Never use \code{inv()}. Always use \code{solve()}.
   \item Never use \code{det()}. Always use \code{slogdet()}.
   \end{itemize}
@@ -215,8 +218,8 @@
   \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
   \item You need to marginalize out the noise.
   \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ in $\ln L$ is
-    equivalent to fitting the noise simultaneously and then
-    marginalizing it out!
+    equivalent to fitting the noise simultaneously with your model $m$
+    and then marginalizing it out!
   \end{itemize}
 \end{frame}
 
@@ -224,7 +227,9 @@
   \frametitle{Enormous models}
   \begin{itemize}
   \item Don't be afraid of enormous models.
-  \item (Later we will go to infinite dimensions!)
+  \item We sometimes use of order $10^9$ nuisance parameters for a
+    single \kepler\ lightcurve (70,000 points) {\footnotesize (Wang
+      \etal, in prep)}.
   \item In general, for nuisances, you want to use very flexible
     models but to learn the ``priors''\footnote{They are not really
       priors if you learn them!}.
@@ -271,8 +276,11 @@
 \begin{frame}
   \frametitle{Implementation details}
   \begin{itemize}
-  \item There are many applied-math tricks for making things faster.
+  \item There are many applied-math tricks for making things much
+    faster than $N^{2.6}$.
   \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
+  \item Marginalizing out the kernel hyperparameters $\theta$ is (in
+    general) very expensive.
   \end{itemize}
 \end{frame}
 
