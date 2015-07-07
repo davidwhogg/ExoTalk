@@ -57,7 +57,7 @@
   \item It can be written as an inner product (with the noise inverse
     covariance as metric).
   \item If we are going to play with the noise (and we are), we must
-    include a ln(det) term.
+    include a $\ln(\det)$ term.
   \end{itemize}
 \end{frame}
 
@@ -75,6 +75,14 @@
     -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
     \nonumber
   \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{itemize}
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $V$ encodes your beliefs about your (Gaussian) noise.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -110,8 +118,8 @@
     \emph{other stars} then that behavior must be being imprinted by
     the spacecraft.
   \item We are using these ideas to separate spacecraft-induced from
-    intrinsic stellar variability (Wang \etal, in preparation;
-    Sch\"olkopf \etal, 1505.03036).
+    intrinsic stellar variability {\footnotesize (Wang \etal, in preparation;
+    Sch\"olkopf \etal, 1505.03036)}.
   \end{itemize}
 \end{frame}
 
@@ -141,9 +149,9 @@
   \frametitle{Systematic noise model}
   \begin{itemize}
   \item Imagine that we believe that the spacecraft systematics
-    (noise) can be modeled as a sum of $K$ basis vectors.
+    (noise) can be modeled as a sum of $M$ basis vectors.
   \item If we can put a Gaussian prior on the linear amplitudes, we
-    can fully represent this noise by adding in a rank-$K$ covariance
+    can fully represent this noise by adding in a rank-$M$ covariance
     matrix.
   \item This is equivalent to fitting and marginalizing!
   \end{itemize}
@@ -156,15 +164,25 @@
     \nonumber \\
     V &=& C + B\cdot\Lambda\cdot\transpose{B}
     \nonumber \\
-    B &=& \mbox{block of $K$ basis vectors}
+    B &=& \mbox{block of $M$ basis vectors}
     \nonumber \\
-    \Lambda &=& \mbox{$K\times K$ prior variance; can $\rightarrow\infty$}
+    \Lambda &=& \mbox{$M\times M$ prior variance; can $\rightarrow\infty$}
     \nonumber
   \end{eqnarray}
 \end{frame}
 
 \begin{frame}
-  \frametitle{noise modeling {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $V + B\cdot\Lambda\cdot\transpose{B}$ encodes your beliefs
+    about your (Gaussian) noise, which now has a systematics
+    component.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
   ~\hfill
   \includegraphics<1>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp10.pdf}
   \includegraphics<2>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp14.pdf}
@@ -175,12 +193,41 @@
 \begin{frame}
   \frametitle{Systematic noise model}
   \begin{itemize}
+  \item How do we set $\Lambda$?
+  \item Learn it:  Maximum likelihood or Bayes.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item Use the Woodbury matrix inversion lemma.
+  \item Never use \code{inv()}. Always use \code{solve()}.
+  \item Never use \code{det()}. Always use \code{slogdet()}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
   \item Don't ``fit and subtract'' your systematics!
   \item That isn't conservative.
-  \item Signals get distorted (Foreman-Mackey \etal, 1502.04715)
+  \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
   \item You need to marginalize out the noise.
-  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ is equivalent to
-    fitting the noise simultaneously and then marginalizing it out!
+  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ in $\ln L$ is
+    equivalent to fitting the noise simultaneously and then
+    marginalizing it out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Enormous models}
+  \begin{itemize}
+  \item Don't be afraid of enormous models.
+  \item (Later we will go to infinite dimensions!)
+  \item In general, for nuisances, you want to use very flexible
+    models but to learn the ``priors''\footnote{They are not really
+      priors if you learn them!}.
   \end{itemize}
 \end{frame}
 
@@ -195,7 +242,7 @@
   \frametitle{Stellar variability noise model}
   \begin{itemize}
   \item Imagine that we believe that stars vary stochastically but
-    continuously (with time correlations).
+    continuously (\ie, with time correlations).
   \item For any model of the amplitude and covariance of the
     variations, we can construct a covariance matrix (to add in).
   \item This is equivalent to fitting and marginalizing!
@@ -204,15 +251,38 @@
 
 \begin{frame}
   \frametitle{Stellar variability noise model}
-g~ [equations here]
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + K
+    \nonumber \\
+    K_{ij} &=& K(|t_i - t_j|; \theta)
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussian processes}
+  ~\hfill
+  \includegraphics<1>[height=0.8\figureheight]{george/ind-results.png}
+  \includegraphics<2>[height=0.8\figureheight]{george/gp-results.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item There are many applied-math tricks for making things faster.
+  \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Systematic noise model}
   \begin{itemize}
   \item Again, don't ``fit and subtract'' the stellar variability!
-  \item Again, using $C + K$ is equivalent to fitting the stochastic
-    variability simultaneously and then marginalizing it out!
+  \item Again, using $C + K$ in $\ln L$ is equivalent to fitting the
+    stochastic variability simultaneously and then marginalizing it
+    out!
   \end{itemize}
 \end{frame}
 
@@ -221,11 +291,18 @@ g~ [equations here]
   \begin{itemize}
   \item Most uses of Gaussian Processes make use of kernel matrices
     with made-up kernels.
+  \item \eg, $K(|t_i-t_j|;\theta) = a^2 \exp -\frac{|t_i-t_j|^2}{2\,\tau^2}$
   \item There are enormous families of kernels constructable from
     functions in the Fourier domain (eg, mixtures of Gaussians).
   \item With the data we have, we should be learning the kernels, not
     adopting convenient ones.
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel learning {\footnotesize (Wilson \& Adams, 1302.4245)}}
+  ~\hfill
+  \includegraphics<1>[height=0.8\figureheight]{george/example_run_letters.jpg}
 \end{frame}
 
 \conclusions
