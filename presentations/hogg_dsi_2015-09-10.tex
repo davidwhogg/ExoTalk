@@ -1,25 +1,27 @@
 \documentclass[pdftex]{beamer}
 %\input{vc}
 % 1.77778 is the ratio of 16 to 9
-%\setlength{\paperheight}{2.5in} % going way small!
-%\setlength{\paperwidth}{1.77778\paperheight}
+\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
-\setlength{\paperheight}{3.0in} % way small!
-\setlength{\paperwidth}{1.33333\paperheight}
+%\setlength{\paperheight}{3.0in} % way small!
+%\setlength{\paperwidth}{1.33333\paperheight}
+%
 \setlength{\textwidth}{0.85\paperwidth}
+\setlength{\textheight}{0.95\paperheight}
 % import the next thing *after* the papersize
 \input{./hogg_presentation} % hogg standard colors
 
 \title{Flexible models for noise, variability, and systematics}
 \author[David W. Hogg (NYU)]{David W. Hogg
-  \textsl{\footnotesize(NYU \& MPIA \& SCDA)}\\[1ex]
+  \textsl{\footnotesize(NYU \& MPIA \& SCDA)}\\
   \texttt{@davidwhogg}\\[1ex]
   \textsl{\footnotesize
     in collaboration with:
     Dan~Foreman-Mackey~\textsl{(UW)},
     Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
-    Dun~Wang~\textsl{(NYU)}}}
-\date{\texttt{\#dsiworkshop} / 2015 September 10}
+    Dun~Wang~\textsl{(NYU)}}\\[1ex]
+{\texttt{\#dsiworkshop} / 2015 September 10}}
 
 \newcommand{\conclusions}{%
 \begin{frame}
@@ -103,6 +105,14 @@
   \item it does this for 13 hours out of every 365.25 days
   \item the Sun has stochastic variability with an amplitude larger than the signal
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{causal structure}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{../code/onecause.png}
+  \includegraphics<2>[height=\figureheight]{../code/threecauses.png}
+  \includegraphics<3>[height=\figureheight]{../code/morecauses.png}
 \end{frame}
 
 \begin{frame}
