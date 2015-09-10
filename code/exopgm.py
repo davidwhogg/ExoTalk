@@ -36,7 +36,7 @@ pgm.figure.savefig("morecauses.png", dpi=150)
 
 pgm2 = daft.PGM(foo, origin=origin)
 pgm2.add_node(daft.Node("kittens", r"kittens?", 3, 2, aspect=2.0))
-pgm2.add_node(daft.Node("data", r"data", 3, 1, aspect=2.0, observed=True))
+pgm2.add_node(daft.Node("data", r"video", 3, 1, aspect=2.0, observed=True))
 pgm2.add_edge("kittens", "data")
 pgm2.render()
 pgm2.figure.savefig("onecause2.pdf")
