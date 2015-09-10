@@ -126,9 +126,10 @@
 \begin{frame}
   \frametitle{causal structure}
   ~\hfill
-  \includegraphics<1>[height=\figureheight]{../code/onecause.png}
-  \includegraphics<2>[height=\figureheight]{../code/threecauses.png}
-  \includegraphics<3>[height=\figureheight]{../code/morecauses.png}
+  \includegraphics<1>[height=\figureheight]{../code/onecause2.pdf}
+  \includegraphics<2>[height=\figureheight]{../code/onecause.pdf}
+  \includegraphics<3>[height=\figureheight]{../code/threecauses.pdf}
+  \includegraphics<4>[height=\figureheight]{../code/morecauses.pdf}
 \end{frame}
 
 \begin{frame}
@@ -136,27 +137,27 @@
   \begin{itemize}
   \item if a star's behavior can be predicted confidently by
     \emph{other stars} then that behavior must be being imprinted by
-    the spacecraft
-  \item using these ideas to separate spacecraft-induced from
+    the spacecraft (s/c)
+  \item using these ideas to separate s/c-induced from
     intrinsic stellar variability (Wang \etal, in preparation)
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Data-driven idea}
+  \frametitle{data-driven idea}
   \begin{itemize}
-  \item The best predictors of a star (or pixel's) behavior are the
+  \item The best predictors of s/c-induced effects
     empirical behaviors of \emph{other stars} (or pixels).
   \item The data \emph{are} the model.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Data-driven idea}
+  \frametitle{data-driven idea}
   \begin{itemize}
-  \item Imagine that spacecraft pointing is the source of your
+  \item Imagine that s/c pointing is the source of your
     dominant systematic.
-  \item Imagine that you have light curves that are good to a part in
+  \item Imagine that you have thousands of light curves that are good to a part in
     $10^5$, every one of which depends differently on pointing.
   \item The light curves themselves contain the pointing information
     at very high fidelity.
@@ -184,8 +185,8 @@
     \end{itemize}
   \item very flexible noise model
     \begin{itemize}
-    \item effectively thousands to millions of parameters per lightcurve
-    \item fully marginalize out the noise draw
+    \item effectively hundreds to millions of parameters per lightcurve
+    \item fully marginalize out all of these
     \end{itemize}
   \item clever applied mathematics
   \end{itemize}
@@ -194,9 +195,9 @@
 \begin{frame}
   \frametitle{reminder: $\chi^2$}
   \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
+  \item ``fitting'' is (often) ``minimizing $\chi^2$''
   \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
-  \item It can be written as an inner product (with the noise inverse
-    covariance as metric).
   \end{itemize}
 \end{frame}
 
@@ -242,7 +243,12 @@
   \item These methods marginalize out (Gaussian) non-trivial noise models.
     \begin{itemize}
     \item equivalent to integrating over all noise draws consistent with the data
-    \item there are more extreme models that permit nonlinear functions of the $B$ vectors
+    \item there are more extreme (tractable) models that permit nonlinear functions of the $B$ vectors
+    \end{itemize}
+  \item They rely on deep assumptions.
+    \begin{itemize}
+    \item Gaussianity: break it and die.
+    \item small skew and few outliers
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -306,14 +312,12 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  \frametitle{exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
   ~\hfill
-  \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
-  \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
-  \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
-  \includegraphics<4>[height=\figureheight]{1406.3020/results-linear-radius.pdf}
-  \includegraphics<5>[height=\figureheight]{1406.3020/results-rate.pdf}
-  \includegraphics<6>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<4>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
 \end{frame}
 
 \conclusions
