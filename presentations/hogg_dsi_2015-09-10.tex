@@ -12,7 +12,7 @@
 % import the next thing *after* the papersize
 \input{./hogg_presentation} % hogg standard colors
 
-\title{Flexible models for noise, variability, and systematics}
+\title{Data Science Methodologies for the Discovery of Extra-solar Planets}
 \author[David W. Hogg (NYU)]{David W. Hogg
   \textsl{\footnotesize(NYU \& MPIA \& SCDA)}\\
   \texttt{@davidwhogg}\\[1ex]
@@ -28,17 +28,9 @@
   \frametitle{summary}
   \begin{itemize}
   \item exoplanet research is shaped by engineering and data analysis challenges
-    \begin{itemize}
-    \item I focus on these issues
-    \end{itemize}
-  \item \emph{search} involves extracting tiny, sparse signals from (huge) data sets
+  \item the search for planets involves extracting tiny, sparse signals from (huge) data sets
     \begin{itemize}
     \item noise modeling and marginalization of systematics
-    \end{itemize}
-  \item \emph{characterization} leaves us with noisy individual-planet measurements
-  \item \emph{population inferences} require expensive noise propagation
-    \begin{itemize}
-    \item hierarchical probabilistic inference
     \end{itemize}
   \item Earth-like planets are plentiful in our Galaxy
     \begin{itemize}
@@ -108,14 +100,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{causal structure}
-  ~\hfill
-  \includegraphics<1>[height=\figureheight]{../code/onecause.png}
-  \includegraphics<2>[height=\figureheight]{../code/threecauses.png}
-  \includegraphics<3>[height=\figureheight]{../code/morecauses.png}
-\end{frame}
-
-\begin{frame}
   \frametitle{noise models}
   \begin{itemize}
   \item precision astrophysics is all about noise
@@ -123,17 +107,28 @@
     \begin{itemize}
     \item models of the Sun do not predict variability in detail
     \item we use data-driven models (non-parametrics)
-    \item auto-regressive models, Gaussian Processes
     \end{itemize}
   \item spacecraft issues
     \begin{itemize}
     \item telescope pointing is not precise (especially for K2)
-    \item point-spread function and flat-field not known to sufficient precision
-    \item temperature changes
     \item we make use of shared information across all stars
     \end{itemize}
-  \item all of these noise sources are \emph{larger than the signals we care about}
+  \item both of these noise sources are \emph{larger than the signals we care about}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{raw K2 light curve {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{causal structure}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{../code/onecause.png}
+  \includegraphics<2>[height=\figureheight]{../code/threecauses.png}
+  \includegraphics<3>[height=\figureheight]{../code/morecauses.png}
 \end{frame}
 
 \begin{frame}
@@ -144,6 +139,28 @@
     the spacecraft
   \item using these ideas to separate spacecraft-induced from
     intrinsic stellar variability (Wang \etal, in preparation)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item The best predictors of a star (or pixel's) behavior are the
+    empirical behaviors of \emph{other stars} (or pixels).
+  \item The data \emph{are} the model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item Imagine that spacecraft pointing is the source of your
+    dominant systematic.
+  \item Imagine that you have light curves that are good to a part in
+    $10^5$, every one of which depends differently on pointing.
+  \item The light curves themselves contain the pointing information
+    at very high fidelity.
+  \item (Much higher fidelity than any direct s/c orientation measurements!)
   \end{itemize}
 \end{frame}
 
@@ -171,11 +188,36 @@
     \item fully marginalize out the noise draw
     \end{itemize}
   \item clever applied mathematics
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{itemize}
+  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+  \item It can be written as an inner product (with the noise inverse
+    covariance as metric).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B}$
     \begin{itemize}
-    \item very fast linear algebra for Gaussian Processes
-    \item Ambikasaran \etal, arXiv:1403.6015
-    \item approximations that permit re-use of repeated calculation
-    \item exploit embarassing parallelization
+    \item $B$ contains the $M=150$ (say) basis vectors
+    \item either $\Lambda\rightarrow\infty$ (permitted!) or choose $\Lambda$ sensibly
+    \item marginalizes out anything in the $B$ subspace
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -184,20 +226,20 @@
   \frametitle{marginalizing out noise}
   \begin{itemize}
   \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
-  \item $\displaystyle C = \diag(\sigma^2)$
-  \item<2-> $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B}$
-    \begin{itemize}
-    \item $B$ contains the $M=150$ (say) basis vectors
-    \item either $\Lambda\rightarrow\infty$ (permitted!) or choose $\Lambda$ sensibly
-    \item marginalizes (projects) out anything in the $B$ subspace
-    \end{itemize}
-  \item<3-> $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B} + K$
+  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B} + K$
     \begin{itemize}
     \item $\displaystyle K_{nn'} = k(|t_{n} - t_{n'}|)$
     \item for example, $\displaystyle K_{nn'} = a\,\exp -\frac{1}{2}\,\frac{[t_{n} - t_{n'}]^2}{\tau^2}$
     \item marginalizes out smooth, nonlinear functions of time (a Gaussian Process)
     \end{itemize}
-  \item<4-> These methods marginalize out (Gaussian) non-trivial noise models.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item These methods marginalize out (Gaussian) non-trivial noise models.
     \begin{itemize}
     \item equivalent to integrating over all noise draws consistent with the data
     \item there are more extreme models that permit nonlinear functions of the $B$ vectors
@@ -231,7 +273,13 @@
     \item need a model for all sources (instrumental and astrophysical) of false positive signals
     \item the most interesting objects are nearly impossible to follow up
     \end{itemize}
-  \item<3-> \emph{secret fact:}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{false positives and false negatives}
+  \begin{itemize}
+  \item \emph{secret fact:}
     it looks like many of the most interesting exoplanet candidates may be false positives
     \begin{itemize}
     \item long periods, small radii
@@ -258,69 +306,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{how do you use noisy measurements?}
-  \begin{itemize}
-  \item exoplanetary astronomers tend to think Bayesian
-    \begin{itemize}
-    \item provide posterior information about exoplanet properties
-    \end{itemize}
-  \item we want to know about the \emph{population} of exoplanets
-    \begin{itemize}
-    \item exoplanets are ``samples'' from this population
-    \item observations are distorted by samples from the noise process
-    \end{itemize}
-  \item usually think in terms of generative probabilistic model
-    \begin{itemize}
-    \item population parameters characterize the population model
-    \item population model generates exoplanet parameters
-    \item exoplanet parameters characterize one exoplanetary system model
-    \item exoplanetary system model (and noise model) generates the raw data
-    \end{itemize}
-  \item want to make \emph{noise-marginalized population inferences}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{hierarchical probabilistic modeling}
-  \begin{itemize}
-  \item if an observer gives us posterior information, it includes some \emph{prior}
-  \item our population model is a \emph{replacement} for that prior
-    \begin{itemize}
-    \item so we want likelihood functions, not posterior samples
-    \item (likelihood \emph{functions} not maximum-likelihood parameters)
-    \end{itemize}
-  \item more applied math: importance sampling tricks
-    \begin{itemize}
-    \item can re-weight posterior samples to use them like likelihood information
-    \end{itemize}
-  \item the full model contains a lot of complicated detail
-    \begin{itemize}
-    \item very flexible populations model with smoothness prior
-    \item bespoke elliptical slice sampling method for inference
-    \item original \kepler\ Mission data but independent Petigura \etal\ catalog and false-negative estimates
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{importance sampling}
-  \begin{itemize}
-  \item you can only combine observations of different exoplanets if you have \emph{likeihoods}
-  \item in reality you will have \emph{posteriors}
-    \begin{itemize}
-    \item for both bad reasons (laziness) good reasons (use of data-driven models)
-    \item tend to be made with a crazy prior $I_0$
-    \end{itemize}
-  \item replace the crazy prior $I_0$ with a population model $\alpha$ by
-    \begin{eqnarray}
-      p(y\given \alpha) &=& \frac{1}{Z}\,\int \frac{p(\theta\given y,\alpha)}{p(\theta\given y,I_0)}\,p(\theta\given y,I_0)\,\dd\theta
-      \\
-      &\approx& \frac{1}{Z}\sum_k \frac{p(\theta_k\given y,\alpha)}{p(\theta_k\given y,I_0)}
-    \end{eqnarray}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
   ~\hfill
   \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
@@ -336,26 +321,6 @@
 \end{document}
 
 %%% OLD STUFF
-
-\begin{frame}
-  \frametitle{RV?}
-  \begin{itemize}
-  \item I am going to talk about \kepler.
-  \item I hope the parallels to RV work are clear.
-  \item Don't be shy about asking.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{reminder: $\chi^2$}
-  \begin{itemize}
-  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
-  \item It can be written as an inner product (with the noise inverse
-    covariance as metric).
-  \item If we are going to play with the noise (and we are), we must
-    include a $\ln(\det)$ term.
-  \end{itemize}
-\end{frame}
 
 \begin{frame}
   \frametitle{reminder: $\chi^2$}
@@ -407,41 +372,6 @@
     \nonumber
   \end{eqnarray}
 \end{frame}
-
-\begin{frame}
-  \frametitle{Causal idea}
-  \begin{itemize}
-  \item If a star's behavior can be predicted confidently by
-    other stars, then that behavior must be being imprinted by
-    the spacecraft.
-  \item We are using these ideas to separate spacecraft-induced from
-    intrinsic stellar variability {\footnotesize (Wang \etal, in prep;
-    Sch\"olkopf \etal, 1505.03036)}.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Data-driven idea}
-  \begin{itemize}
-  \item The best predictors of a star (or pixel's) behavior are the
-    empirical behaviors of \emph{other stars} (or pixels).
-  \item The data \emph{are} the model.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Data-driven idea}
-  \begin{itemize}
-  \item Imagine that spacecraft pointing is the source of your
-    dominant systematic.
-  \item Imagine that you have light curves that are good to a part in
-    $10^5$, every one of which depends differently on pointing.
-  \item The light curves themselves contain the pointing information
-    at very high fidelity.
-  \item (Much higher fidelity than any measured centroids!)
-  \end{itemize}
-\end{frame}
-
 \begin{frame}
   \frametitle{Systematic noise model}
   \begin{itemize}
