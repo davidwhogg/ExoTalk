@@ -12,7 +12,7 @@
 % import the next thing *after* the papersize
 \input{./hogg_presentation} % hogg standard colors
 
-\title{Data Science Methodologies for the Discovery of Extra-solar Planets}
+\title{Finding planets around other stars \\ with methods from data science}
 \author[David W. Hogg (NYU)]{David W. Hogg
   \textsl{\footnotesize(NYU \& MPIA \& SCDA)}\\
   \texttt{@davidwhogg}\\[1ex]
@@ -21,7 +21,7 @@
     Dan~Foreman-Mackey~\textsl{(UW)},
     Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
     Dun~Wang~\textsl{(NYU)}}\\[1ex]
-{\texttt{\@datapoint} / 2015 October 02}}
+{\textsl{DataPoint} / 2015 October 02}}
 
 \newcommand{\conclusions}{%
 \begin{frame}
@@ -48,6 +48,16 @@
 \end{frame}
 
 \conclusions
+
+\begin{frame}
+  \frametitle{an Earth-like planet transit signal}
+  \begin{itemize}
+  \item requires good alignment (percent-level)
+  \item Earth blocks $10^{-4}$ of the light from the Sun
+  \item it does this for 13 hours out of every 365.25 days
+  \item the Sun has stochastic variability with an amplitude larger than the signal
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{the NASA \kepler\ Mission}
@@ -86,16 +96,6 @@
     \item currently the longest list of K2 discoveries is from my group
     \item Foreman-Mackey \etal, arXiv:1502.04715
     \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{an Earth-like transit signal}
-  \begin{itemize}
-  \item requires good alignment (percent-level)
-  \item Earth blocks $10^{-4}$ of the light from the Sun
-  \item it does this for 13 hours out of every 365.25 days
-  \item the Sun has stochastic variability with an amplitude larger than the signal
   \end{itemize}
 \end{frame}
 
@@ -193,67 +193,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{reminder: $\chi^2$}
-  \begin{itemize}
-  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
-  \item ``fitting'' is (often) ``minimizing $\chi^2$''
-  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{marginalizing out noise}
-  \begin{itemize}
-  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
-  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
-  \item $\displaystyle C = \diag(\sigma^2)$
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{marginalizing out noise}
-  \begin{itemize}
-  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
-  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B}$
-    \begin{itemize}
-    \item $B$ contains the $M=150$ (say) basis vectors
-    \item either $\Lambda\rightarrow\infty$ (permitted!) or choose $\Lambda$ sensibly
-    \item marginalizes out anything in the $B$ subspace
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{marginalizing out noise}
-  \begin{itemize}
-  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
-  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B} + K$
-    \begin{itemize}
-    \item $\displaystyle K_{nn'} = k(|t_{n} - t_{n'}|)$
-    \item for example, $\displaystyle K_{nn'} = a\,\exp -\frac{1}{2}\,\frac{[t_{n} - t_{n'}]^2}{\tau^2}$
-    \item marginalizes out smooth, nonlinear functions of time (a Gaussian Process)
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{marginalizing out noise}
-  \begin{itemize}
-  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
-  \item These methods marginalize out (Gaussian) non-trivial noise models.
-    \begin{itemize}
-    \item equivalent to integrating over all noise draws consistent with the data
-    \item there are more extreme (tractable) models that permit nonlinear functions of the $B$ vectors
-    \end{itemize}
-  \item They rely on deep assumptions.
-    \begin{itemize}
-    \item Gaussianity: break it and die.
-    \item small skew and few outliers
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{exoplanet search {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
   ~\hfill
   \includegraphics<1>[height=0.9\figureheight]{1502.04715/figures-corr.pdf}
@@ -314,10 +253,8 @@
 \begin{frame}
   \frametitle{exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
   ~\hfill
-  \includegraphics<1>[height=\figureheight]{1406.3020/results-period.pdf}
-  \includegraphics<2>[height=\figureheight]{1406.3020/results-radius.pdf}
-  \includegraphics<3>[height=\figureheight]{1406.3020/results-rate.pdf}
-  \includegraphics<4>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<2>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
 \end{frame}
 
 \conclusions
