@@ -1,0 +1,548 @@
+\documentclass[pdftex]{beamer}
+%\input{vc}
+% 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+%\setlength{\paperheight}{3.0in} % way small!
+%\setlength{\paperwidth}{1.33333\paperheight}
+%
+\setlength{\textwidth}{0.85\paperwidth}
+\setlength{\textheight}{0.95\paperheight}
+% import the next thing *after* the papersize
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Finding planets in very noisy data from stars}
+\author[David W. Hogg (NYU)]{David W. Hogg
+  \textsl{\footnotesize(NYU \& MPIA \& SCDA)}\\
+  \texttt{@davidwhogg}\\[1ex]
+  \textsl{\footnotesize
+    in collaboration with:
+    Dan~Foreman-Mackey~\textsl{(UW)},
+    Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
+    Dun~Wang~\textsl{(NYU)}}\\[1ex]
+{Courant Applied Math Seminar / 2015 October 30}}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{summary}
+  \begin{itemize}
+  \item exoplanet research is shaped by engineering and data analysis challenges
+  \item the search for planets involves extracting tiny, sparse signals from (huge) data sets
+    \begin{itemize}
+    \item noise modeling and marginalization of systematics
+    \end{itemize}
+  \item Earth-like planets are plentiful in our Galaxy
+    \begin{itemize}
+    \item a percent (or more) of Sun-like stars host Earth-like planets
+    \item the Solar System is not obviously typical in any way
+    \item little is known about Jupiter-like planets
+    \end{itemize}
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ Mission}
+  \begin{itemize}
+  \item stared at 150,000 stars for 4 years (30-min cadence)
+    \begin{itemize}
+    \item 70,000 measurements per star
+    \item all data completely public
+    \end{itemize}
+  \item looking for exoplanet transit signals
+  \item found \emph{thousands} of exoplanets (candidates)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ Mission}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{kepler/750603main_Ball_Kepler_A8468_275_lg_blog_main_horizontal.jpg}
+  \includegraphics<2>[height=\figureheight]{kepler/Kepler_FOV_hiRes.jpg}
+  \includegraphics<3>[height=\figureheight]{kepler/FirstLightLogInvertedPink_wslbld2400.jpg}
+  \includegraphics<4>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<5>[height=0.9\figureheight]{1502.04715/figures-folded.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{the NASA \kepler\ K2 Mission}
+  \begin{itemize}
+  \item failure of reaction wheels led to worse pointing
+    \begin{itemize}
+    \item forced to stare at fields such that Solar torque is near zero
+    \end{itemize}
+  \item staring at 12 fields for 80 days each
+  \item all data immediately public
+  \item finding exoplanets around lower-mass stars
+    \begin{itemize}
+    \item currently the longest list of K2 discoveries is from my group
+    \item Foreman-Mackey \etal, arXiv:1502.04715
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{an Earth-like transit signal}
+  \begin{itemize}
+  \item requires good alignment (percent-level)
+  \item Earth blocks $10^{-4}$ of the light from the Sun
+  \item it does this for 13 hours out of every 365.25 days
+  \item the Sun has stochastic variability with an amplitude larger than the signal
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{noise models}
+  \begin{itemize}
+  \item precision astrophysics is all about noise
+  \item stochastic variability of the Sun
+    \begin{itemize}
+    \item models of the Sun do not predict variability in detail
+    \item we use data-driven models (non-parametrics)
+    \end{itemize}
+  \item spacecraft issues
+    \begin{itemize}
+    \item telescope pointing is not precise (especially for K2)
+    \item we make use of shared information across all stars
+    \end{itemize}
+  \item both of these noise sources are \emph{larger than the signals we care about}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{raw K2 light curve {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{causal structure}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{../code/onecause2.pdf}
+  \includegraphics<2>[height=\figureheight]{../code/onecause.pdf}
+  \includegraphics<3>[height=\figureheight]{../code/threecauses.pdf}
+  \includegraphics<4>[height=\figureheight]{../code/morecauses.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{causal idea}
+  \begin{itemize}
+  \item if a star's behavior can be predicted confidently by
+    \emph{other stars} then that behavior must be being imprinted by
+    the spacecraft (s/c)
+  \item using these ideas to separate s/c-induced from
+    intrinsic stellar variability (Wang \etal, in preparation)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven idea}
+  \begin{itemize}
+  \item The best predictors of s/c-induced effects
+    empirical behaviors of \emph{other stars} (or pixels).
+  \item The data \emph{are} the model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{data-driven idea}
+  \begin{itemize}
+  \item Imagine that s/c pointing is the source of your
+    dominant systematic.
+  \item Imagine that you have thousands of light curves that are good to a part in
+    $10^5$, every one of which depends differently on pointing.
+  \item The light curves themselves contain the pointing information
+    at very high fidelity.
+  \item (Much higher fidelity than any direct s/c orientation measurements!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{noise modeling {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp11.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<5>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp17.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanet search}
+  \begin{itemize}
+  \item enormous set of hypothesis tests
+    \begin{itemize}
+    \item extremely fine grid in period and phase
+    \item can't ``just'' use Fourier methods because of signal sparsity
+    \end{itemize}
+  \item very flexible noise model
+    \begin{itemize}
+    \item effectively hundreds to millions of parameters per lightcurve
+    \item fully marginalize out all of these
+    \end{itemize}
+  \item clever applied mathematics
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
+  \item ``fitting'' is (often) ``minimizing $\chi^2$''
+  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\sum_n\frac{[y_n - \mu_n]^2}{\sigma_n^2}$
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B}$
+    \begin{itemize}
+    \item $B$ contains the $M=150$ (say) basis vectors
+    \item either $\Lambda\rightarrow\infty$ (permitted!) or choose $\Lambda$ sensibly
+    \item marginalizes out anything in the $B$ subspace
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item $\displaystyle C = \diag(\sigma^2) + B\cdot\Lambda\cdot\transpose{B} + K$
+    \begin{itemize}
+    \item $\displaystyle K_{nn'} = k(|t_{n} - t_{n'}|)$
+    \item for example, $\displaystyle K_{nn'} = a\,\exp -\frac{1}{2}\,\frac{[t_{n} - t_{n'}]^2}{\tau^2}$
+    \item marginalizes out smooth, nonlinear functions of time (a Gaussian Process)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{marginalizing out noise}
+  \begin{itemize}
+  \item $\displaystyle\chi^2\equiv\transpose{[y - \mu]}\cdot C^{-1}\cdot[y - \mu]$
+  \item These methods marginalize out (Gaussian) non-trivial noise models.
+    \begin{itemize}
+    \item equivalent to integrating over all noise draws consistent with the data
+    \item there are more extreme (tractable) models that permit nonlinear functions of the $B$ vectors
+    \end{itemize}
+  \item They rely on deep assumptions.
+    \begin{itemize}
+    \item Gaussianity: break it and die.
+    \item small skew and few outliers
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanet search {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=0.9\figureheight]{1502.04715/figures-corr.pdf}
+  \includegraphics<2>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<3>[height=0.9\figureheight]{1502.04715/figures-linear.pdf}
+  \includegraphics<4>[height=0.9\figureheight]{1502.04715/figures-periodic.pdf}
+  \includegraphics<5>[height=0.9\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<6>[height=0.9\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<7>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{false positives and false negatives}
+  \begin{itemize}
+  \item it is easy to figure out the \emph{false-negative} rate
+    \begin{itemize}
+    \item inject fake signals into the lightcurves, search
+    \item complement is called the ``efficiency'' or ``completeness''
+    \end{itemize}
+  \item<2-> it is \emph{impossible} to figure out the \emph{false-positive} rate
+    \begin{itemize}
+    \item ground truth is known for no complete sample
+    \item need a model for all sources (instrumental and astrophysical) of false positive signals
+    \item the most interesting objects are nearly impossible to follow up
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{false positives and false negatives}
+  \begin{itemize}
+  \item \emph{secret fact:}
+    it looks like many of the most interesting exoplanet candidates may be false positives
+    \begin{itemize}
+    \item long periods, small radii
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{search completeness {\footnotesize (Foreman-Mackey \etal, arXiv:1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-completeness.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{characterization: what can we measure?}
+  \begin{itemize}
+  \item easy: period, size ratio
+  \item hard: size, temperature, composition
+    \begin{itemize}
+    \item We can't understand the exoplanets any better than we can understand the stars they orbit!
+    \item renewed interest in precision stellar astrophysics
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<4>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\conclusions
+
+\end{document}
+
+%%% OLD STUFF
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{eqnarray}
+    \chi^2 &\equiv& \sum_i \frac{[y_i - m_i]^2}{\sigma_i^2}
+    \nonumber \\
+    \chi^2 &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m]
+    \nonumber \\
+    V &=& C
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{reminder: $\chi^2$}
+  \begin{itemize}
+  \item $\transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $V$ encodes your beliefs about your (Gaussian) noise.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{itemize}
+  \item If there are multiple sources of (Gaussian) noise, their
+    covariances add.
+  \item Adding new components to the noise variance tensor $V$ is
+    equivalent to fitting for other noise processes and marginalizing
+    them out.
+  \item This is literally as trivial as it sounds.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + Q
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    Q &=& \mbox{variance tensor of additional noise}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Imagine that we believe that the spacecraft systematics
+    (noise) can be modeled as a sum of $M$ basis vectors.
+  \item If we can put a Gaussian prior on the linear amplitudes, we
+    can fully represent this noise by adding in a rank-$M$ covariance
+    matrix.
+  \item This is equivalent to fitting and marginalizing!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + B\cdot\Lambda\cdot\transpose{B}
+    \nonumber \\
+    B &=& \mbox{block of $M$ basis vectors}
+    \nonumber \\
+    \Lambda &=& \mbox{$M\times M$ prior variance; can $\rightarrow\infty$}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $V + B\cdot\Lambda\cdot\transpose{B}$ encodes your beliefs
+    about your (Gaussian) noise, which now has a systematics
+    component.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=0.8\figureheight]{brownbag/brownbagp17.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item How do we set $\Lambda$?
+  \item Learn it:  Maximum likelihood or Bayes.
+  \item (After all, we have a likelihood function!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item For expressions like $C + B\cdot\Lambda\cdot\transpose{B}$
+    there are matrix inversion and determinant lemmas.
+  \item Never use \code{inv()}. Always use \code{solve()}.
+  \item Never use \code{det()}. Always use \code{slogdet()}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Don't ``fit and subtract'' your systematics!
+  \item That isn't conservative.
+  \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
+  \item You need to marginalize out the noise.
+  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ in $\ln L$ is
+    equivalent to fitting the noise simultaneously with your model $m$
+    and then marginalizing it out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Enormous models}
+  \begin{itemize}
+  \item Don't be afraid of enormous models.
+  \item We sometimes use of order $10^9$ nuisance parameters for a
+    single \kepler\ lightcurve (70,000 points) {\footnotesize (Wang
+      \etal, in prep)}.
+  \item In general, for nuisances, you want to use very flexible
+    models but to learn the ``priors''\footnote{They are not really
+      priors if you learn them!}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussians are miraculous}
+  \begin{itemize}
+  \item ~[that is all]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar variability noise model}
+  \begin{itemize}
+  \item Imagine that we believe that stars vary stochastically but
+    continuously (\ie, with time correlations).
+  \item For any model of the amplitude and covariance of the
+    variations, we can construct a covariance matrix (to add in).
+  \item This is equivalent to fitting and marginalizing!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar variability noise model}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + K
+    \nonumber \\
+    K_{ij} &=& K(|t_i - t_j|; \theta)
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussian processes}
+  ~\hfill
+  \includegraphics<1>[height=0.8\figureheight]{george/ind-results.png}
+  \includegraphics<2>[height=0.8\figureheight]{george/gp-results.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item There are many applied-math tricks for making things much
+    faster than $N^{2.6}$.
+  \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
+  \item Marginalizing out the kernel hyperparameters $\theta$ is (in
+    general) very expensive.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Again, don't ``fit and subtract'' the stellar variability!
+  \item Again, using $C + K$ in $\ln L$ is equivalent to fitting the
+    stochastic variability simultaneously and then marginalizing it
+    out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel learning}
+  \begin{itemize}
+  \item Most uses of Gaussian Processes make use of kernel matrices
+    with made-up kernels.
+  \item \eg, $K(|t_i-t_j|;\theta) = a^2 \exp -\frac{|t_i-t_j|^2}{2\,\tau^2}$
+  \item There are enormous families of kernels constructable from
+    functions in the Fourier domain (eg, mixtures of Gaussians).
+  \item With the data we have, we should be learning the kernels, not
+    adopting convenient ones.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kernel learning {\footnotesize (Wilson \& Adams, 1302.4245)}}
+  ~\hfill
+  \includegraphics<1>[height=0.8\figureheight]{george/example_run_letters.jpg}
+\end{frame}
+
+\conclusions
+
+\end{document}
