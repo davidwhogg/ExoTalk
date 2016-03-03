@@ -1,6 +1,5 @@
 % to-do:
 % ------
-% - merge in intro to exoplanets
 % - merge in population results
 % - discuss limitations of everything we are doing
 
@@ -33,11 +32,11 @@
 
 \newcommand{\conclusions}{%
 \begin{frame}
-  \frametitle{high-level summary}
+  \frametitle{High-level summary}
   \begin{itemize}
-  \item exoplanet research is shaped by engineering and data analysis challenges
-  \item \emph{search} involves extracting tiny, sparse signals
-  \item \emph{population inferences} require expensive noise propagation
+  \item Exoplanet research is shaped by engineering and data analysis challenges
+  \item \emph{Search} involves extracting tiny, sparse signals
+  \item (\emph{Population inferences} require expensive noise propagation)
   \item Earth-like planets are plentiful in our Galaxy
     \begin{itemize}
     \item a percent (or more) of Sun-like stars host Earths
@@ -48,7 +47,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{summary of the technical parts}
+  \frametitle{Summary of the technical parts}
   \begin{itemize}
   \item Generalizations of chi-squared fitting can account for
     systematics and correlated noise.
@@ -69,20 +68,20 @@
 \conclusions
 
 \begin{frame}
-  \frametitle{the NASA \kepler\ Mission}
+  \frametitle{The NASA \kepler\ Mission}
   \begin{itemize}
-  \item stared at 150,000 stars for 4 years (30-min cadence)
+  \item Stared at 150,000 stars for 4 years (30-min cadence)
     \begin{itemize}
     \item 70,000 measurements per star
     \item all data completely public
     \end{itemize}
-  \item looking for exoplanet \emph{transit signals}
-  \item found \emph{thousands} of exoplanets (candidates)
+  \item Looking for exoplanet \emph{transit signals}
+  \item Found \emph{thousands} of exoplanets (candidates).
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{the NASA \kepler\ Mission}
+  \frametitle{The NASA \kepler\ Mission}
   ~\hfill
   \includegraphics<1>[height=\figureheight]{kepler/750603main_Ball_Kepler_A8468_275_lg_blog_main_horizontal.jpg}
   \includegraphics<2>[height=\figureheight]{kepler/Kepler_FOV_hiRes.jpg}
@@ -93,7 +92,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{the NASA \kepler\ K2 Mission}
+  \frametitle{The NASA \kepler\ K2 Mission}
   \begin{itemize}
   \item failure of reaction wheels led to worse pointing
     \begin{itemize}
@@ -104,13 +103,13 @@
   \item finding exoplanets around lower-mass stars
     \begin{itemize}
     \item currently the longest list of K2 discoveries is from my group
-    \item Foreman-Mackey \etal, arXiv:1502.04715
+    \item (Foreman-Mackey \etal, arXiv:1502.04715)
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{an Earth-like transit signal}
+  \frametitle{Earth-like transit signals}
   \begin{itemize}
   \item requires good alignment (percent-level)
   \item Earth blocks $10^{-4}$ of the light from the Sun
@@ -132,19 +131,20 @@
 \conclusions
 
 \begin{frame}
-  \frametitle{reminder: $\chi^2$}
+  \frametitle{Reminder: $\chi^2$}
   \begin{itemize}
-  \item (Here $\chi^2$ is a scalar, not a distribution!)
-  \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+  \item Measures goodness (or badness) of fit.
+    \begin{itemize}
+    \item (Here $\chi^2$ is a scalar, not a distribution!)
+    \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+    \end{itemize}
   \item It can be written as an inner product (with the noise inverse
-    covariance as metric).
-  \item If we are going to play with the noise (and we are), we must
-    include a $\ln(\det)$ term.
+    covariance as metric), like a metric squared-distance!
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{reminder: $\chi^2$}
+  \frametitle{Reminder: $\chi^2$}
   \begin{eqnarray}
     \chi^2 &\equiv& \sum_i \frac{[y_i - m_i]^2}{\sigma_i^2}
     \nonumber \\
@@ -160,7 +160,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{reminder: $\chi^2$}
+  \frametitle{Reminder: $\chi^2$}
   \begin{itemize}
   \item $\transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
   \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
@@ -171,10 +171,9 @@
 \begin{frame}
   \frametitle{Generalizing (Gaussian) noise}
   \begin{itemize}
-  \item If there are multiple sources of (Gaussian) noise, their
-    covariances add.
-  \item Adding new components to the noise variance tensor $V$ is
-    equivalent to fitting for other noise processes and marginalizing
+  \item Multiple addititive sources of (Gaussian) noise? Add covariances.
+  \item Adding new components to the noise tensor $V$ is
+    equivalent to fitting for new noise processes and marginalizing
     them out.
   \item This is literally as trivial as it sounds.
   \end{itemize}
@@ -201,8 +200,8 @@
     other stars, then that behavior must be being imprinted by
     the spacecraft.
   \item We are using these ideas to separate spacecraft-induced from
-    intrinsic stellar variability {\footnotesize (Wang \etal, in prep;
-    Sch\"olkopf \etal, 1505.03036)}.
+    intrinsic stellar variability {\footnotesize (Wang \etal, arXiv:1508.01853;
+    Sch\"olkopf \etal, arXiv:1505.03036)}.
   \end{itemize}
 \end{frame}
 
@@ -370,12 +369,42 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Systematic noise model}
+  \frametitle{Stellar noise model}
   \begin{itemize}
   \item Again, don't ``fit and subtract'' the stellar variability!
+  \item Model the variability by adding a Kernel matrix to the covariance matrix.
   \item Again, using $C + K$ in $\ln L$ is equivalent to fitting the
     stochastic variability simultaneously and then marginalizing it
     out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Principal limitation 1}
+  \begin{itemize}
+  \item Assumption of Gaussianity:
+    \begin{itemize}
+    \item outliers are death
+    \item variabilities are all skew
+    \item multiplicative noise?
+    \end{itemize}
+  \item Generalizaions are \emph{intractable} or evil.
+    \begin{itemize}
+    \item dictionary methods, other processes
+    \item the copula
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Principal limitation 2}
+  \begin{itemize}
+  \item Heuristic decisions
+    \begin{itemize}
+    \item model complexity
+    \item prior forms and hyper-parameters
+    \item detection thresholds
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
