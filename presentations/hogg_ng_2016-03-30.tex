@@ -1,0 +1,286 @@
+\documentclass[pdftex]{beamer}
+%\input{vc}
+
+% set paper size
+% 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+%\setlength{\paperheight}{3.0in} % way small!
+%\setlength{\paperwidth}{1.33333\paperheight}
+
+% set lengths given paper
+\setlength{\textheight}{0.95\paperheight}
+\setlength{\textwidth}{0.85\paperwidth}
+
+% import the next thing *after* the lengths and sizes
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Discovering Exoplanets with Data-Driven Models}
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(SCDA \& NYU \& MPIA)} \\[1ex]
+                             {\small in collaboration with Daniel Foreman-Mackey (UW)\\
+                                     Dun Wang (NYU), Bernhard Sch\"olkopf (MPI-IS)}}
+\date{NG SfL / 2016 March 30}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{High-level summary}
+  \begin{itemize}
+  \item Exoplanet search involves extracting tiny, sparse signals, often \emph{smaller} than the dominant noise.
+  \item Data-driven models of this ``noise'' outperform any theory, and also any simple filtering.
+  \item General advice for next-generation projects:
+    \begin{itemize}
+    \item Take as much data as physically possible.
+    \item Shorten exposure times!
+    \item Build flexibility into observing strategy and details.
+    \end{itemize}
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{Hard problems}
+  \begin{itemize}
+  \item Like NG, we work on \emph{hard problems}.
+    \begin{itemize}
+    \item We work mainly in the software domain.
+    \item When making a measurement looks impossible.
+    \item (We recruit great people this way!)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ideas from yesterday}
+  \begin{itemize}
+  \item Telescopes and instruments are \emph{integrated hardware--software systems}.
+    \begin{itemize}
+    \item Let's work out these trades.
+    \item Let's involve software from day zero.
+    \end{itemize}
+  \item Sometimes your biggest challenges are your \emph{biggest opportunities}.
+    \begin{itemize}
+    \item example: \kepler\ \project{K2} pointing jitter vastly improved our instrument model.
+    \item example: Extreme sparseness of transit signal permits sensitive stellar noise modeling.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\kepler\ reanalyses ({\footnotesize Foreman-Mackey \etal, 1406.3020})}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<4>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Self-calibration idea}
+  \begin{itemize}
+  \item If a star's behavior can be predicted confidently by
+    other stars, then that behavior must be being imprinted by
+    the spacecraft.
+  \item We are using these ideas to separate spacecraft-induced from
+    intrinsic stellar variability {\footnotesize (Wang \etal, arXiv:1508.01853;
+    Sch\"olkopf \etal, arXiv:1505.03036)}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item The best predictors of a star (or pixel's) behavior are the
+    empirical behaviors of \emph{other stars} (or pixels).
+  \item The data \emph{are} the model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven idea}
+  \begin{itemize}
+  \item Imagine that spacecraft pointing is the source of your
+    dominant systematic.
+  \item Imagine that you have light curves that are good to a part in
+    $10^5$, every one of which depends differently on pointing.
+  \item The light curves themselves contain the pointing information
+    at very high fidelity.
+  \item (Much higher fidelity than any measured centroids or s/c aspect solution!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\project{K2} reanalysis {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp17.pdf}
+  \includegraphics<5>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp18.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\project{K2} reanalysis {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-periodic.pdf}
+  \includegraphics<2>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<3>[height=\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<4>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\project{P1640} spectroscopy {\footnotesize (Oppenheimer \etal, 1303.2627)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1303.2627/f8b.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\project{P1640} pipeline {\footnotesize (Fergus \etal, 1408.4248)}}
+  ~\hfill
+  \includegraphics<1>[width=\textwidth]{1408.4248/examples.pdf}
+  \includegraphics<2>[height=\figureheight]{1408.4248/eigenvectors.pdf}
+  \includegraphics<3>[height=\figureheight]{1408.4248/patch_reconstructions.pdf}
+  \includegraphics<4>[width=\textwidth]{1408.4248/residuals.pdf}
+  \includegraphics<5>[height=\figureheight]{1408.4248/mean_rt2.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Don't ``fit and subtract'' your systematics!
+  \item That isn't conservative.
+  \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
+  \item You need to \emph{marginalize out the noise}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Earth-like transit signals}
+  \begin{itemize}
+  \item This requires good alignment (percent-level).
+  \item Earth blocks $10^{-4}$ of the light from the Sun.
+  \item It does this for 13 hours out of every 365.25 days.
+  \item The Sun has stochastic variability with an \emph{amplitude larger than the signal}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Noise modeling}
+  \begin{itemize}
+  \item Build a very sophisticated, generative model of stellar variability.
+    \begin{itemize}
+    \item Different for every star.
+    \item Capitalize on sparsity of the exoplanet signal!
+    \end{itemize}
+  \item Show that isolated transits (eclipses) cannot be generated by that model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\kepler\ reanalyses ({\footnotesize Foreman-Mackey \etal, in prep})}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{dfm/full_sample.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Advice: Enormous models}
+  \begin{itemize}
+  \item Don't be afraid of enormous models.
+    \begin{itemize}
+    \item We sometimes use of order $10^9$ nuisance parameters for a
+      single \kepler\ lightcurve (70,000 points) {\footnotesize (Wang
+        \etal, arXiv:1508.01853)}.
+    \end{itemize}
+  \item In general, for nuisances, you want to use very flexible
+    models but to learn the ``priors''\footnote{They are not really
+      priors if you learn them!}.
+  \item Or \emph{train and test} in disjoint sets.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Advice: Data volume}
+  \begin{itemize}
+  \item More data is better.
+  \item Push bandwidth limits.
+  \item Shorten exposure times
+    \begin{itemize}
+    \item Astronomer folklore about read noise vs shot noise is \emph{often wrong}.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Advice: Vary everything}
+  \begin{itemize}
+  \item Vary pointing, exposure time as much as possible.
+    \begin{itemize}
+    \item We can show that \kepler\ would have returned more with variable exposure times.
+    \item Exposure variations do not add to bandwidth.
+    \end{itemize}
+  \item Vary optics (focus, alignment) if you are permitted.
+  \item Vary s/c control procedures (thruster firings, \etc).
+  \item A star-shade adds six new degrees of freedom (at least) of variation!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Advice: Physics-driven and data-driven teams}
+  \begin{itemize}
+  \item Task teams to take data-driven and theory-driven approaches.
+  \item They will learn from each other.
+  \end{itemize}
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+~\hfill [backup slides] \hfill~
+\end{frame}
+
+\begin{frame}
+  \frametitle{The paradox of precision astrophysics}
+  \begin{itemize}
+  \item models are incredibly \emph{explanatory}
+    \begin{itemize}
+    \item $\Lambda$CDM
+    \item stellar spectroscopy
+    \item helioseismology
+    \end{itemize}
+  \item and yet...
+  \item<2-> models are \emph{wrong} (ruled out) in detail
+    \begin{itemize}
+    \item $\chi^2 \gg \nu$
+    \item ``The $\chi^2$ statistic is a measure of the size of your data!''
+    \end{itemize}
+  \item<2-> missing physics, approximation, computation, \emph{gastrophysics}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data-driven models aren't fully interpretable}
+  \begin{itemize}
+  \item Use them for the parts of the problem you \emph{don't} care about.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{itemize}
+  \item $-2\,\ln L = \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
+  \item Multiple addititive sources of (Gaussian) noise? Add covariances.
+  \item Adding new components to the noise tensor $V$ is
+    equivalent to fitting for new noise processes and marginalizing
+    them out.
+  \item This is literally as trivial as it sounds.
+  \end{itemize}
+\end{frame}
+
+\end{document}
