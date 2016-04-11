@@ -8,7 +8,7 @@
 
 % set paper size
 % 1.77778 is the ratio of 16 to 9
-\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperheight}{3.in} % going way small!
 \setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
 %\setlength{\paperheight}{3.0in} % way small!
@@ -21,7 +21,7 @@
 % import the next thing *after* the lengths and sizes
 \input{./hogg_presentation} % hogg standard colors
 
-\title{Self-calibration, systematic errors, and exoplanet discovery}
+\title{Finding exoplanets in stellar and spacecraft noise.}
 \author[David W. Hogg (NYU)]{David W. Hogg \textsl{(SCDA \& NYU \& MPIA)}\\[1ex]
   \textsl{\footnotesize
     in collaboration with:
@@ -34,10 +34,10 @@
 \begin{frame}
   \frametitle{High-level summary}
   \begin{itemize}
-  \item Exoplanet research is shaped by engineering and data analysis challenges
-  \item \emph{Search} involves extracting tiny, sparse signals
-  \item (\emph{Population inferences} require expensive noise propagation)
-  \item Earth-like planets are plentiful in our Galaxy
+  \item Exoplanet research is shaped by engineering and data analysis challenges.
+  \item \emph{Search} involves extracting tiny, sparse signals.
+  \item (Population inferences require expensive noise propagation.)
+  \item Earth-like planets are plentiful in our Galaxy.
     \begin{itemize}
     \item more than a few percent of Sun-like stars host Earths
     \item the Solar System is not obviously typical
@@ -92,7 +92,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{The NASA \kepler\ K2 Mission}
+  \frametitle{The NASA \kepler\ \project{K2} Mission}
   \begin{itemize}
   \item failure of reaction wheels led to worse pointing
     \begin{itemize}
@@ -102,10 +102,17 @@
   \item all data immediately public
   \item finding exoplanets around lower-mass stars
     \begin{itemize}
-    \item currently the longest list of K2 discoveries is from my group
-    \item (Foreman-Mackey \etal, arXiv:1502.04715)
+    \item currently my group is the only open source of \project{K2} exoplanet
+      discoveries (plus completeness and characterization;
+      Foreman-Mackey \etal, arXiv:1502.04715)
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The NASA \kepler\ \project{K2} Mission}
+  ~\hfill
+  \includegraphics[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
 \end{frame}
 
 \begin{frame}
@@ -125,7 +132,13 @@
   \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
   \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
   \includegraphics<4>[height=\figureheight]{1406.3020/results-rate.pdf}
-  \includegraphics<5>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  ~\hfill
+  \includegraphics[height=0.75\textheight]{1406.3020/figures-comparison.pdf} \\
+  (These results are now superceded by Burke et al 2016.)
 \end{frame}
 
 \conclusions
@@ -171,7 +184,7 @@
 \begin{frame}
   \frametitle{Generalizing (Gaussian) noise}
   \begin{itemize}
-  \item Multiple addititive sources of (Gaussian) noise? Add covariances.
+  \item Multiple addititive sources of (Gaussian) noise? \emph{Add covariances}.
   \item Adding new components to the noise tensor $V$ is
     equivalent to fitting for new noise processes and marginalizing
     them out.
@@ -311,12 +324,15 @@
   \frametitle{Enormous models}
   \begin{itemize}
   \item Don't be afraid of enormous models.
-  \item We sometimes use of order $10^9$ nuisance parameters for a
+  \item We sometimes use of order \emph{$10^9$ nuisance parameters} for a
     single \kepler\ lightcurve (70,000 points) {\footnotesize (Wang
       \etal, arXiv:1508.01853)}.
   \item In general, for nuisances, you want to use very flexible
     models but to learn the ``priors''\footnote{They are not really
       priors if you learn them!}.
+    \begin{itemize}
+    \item \emph{Or} use \emph{train-and-test} frameworks.
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
