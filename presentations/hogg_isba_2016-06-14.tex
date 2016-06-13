@@ -1,0 +1,332 @@
+% to-do:
+% ------
+% - merge in population results
+% - discuss limitations of everything we are doing
+
+\documentclass[pdftex]{beamer}
+%\input{vc}
+
+% set paper size
+% 1.77778 is the ratio of 16 to 9
+\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperwidth}{1.77778\paperheight}
+% 1.33333 is the ratio of 4 to 3
+%\setlength{\paperheight}{3.0in} % way small!
+%\setlength{\paperwidth}{1.33333\paperheight}
+
+% set lengths given paper
+\setlength{\textheight}{0.95\paperheight}
+\setlength{\textwidth}{0.85\paperwidth}
+
+% import the next thing *after* the lengths and sizes
+\input{./hogg_presentation} % hogg standard colors
+
+\title{Finding exoplanets and characterizing their population}
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(SCDA \& NYU \& MPIA)}\\[1ex]
+  \textsl{\footnotesize
+    in collaboration with:
+    Dan~Foreman-Mackey~\textsl{(UW)},
+    Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
+    Dun~Wang~\textsl{(NYU)}}}
+\date{ISBA / 2016 June 14}
+
+\newcommand{\conclusions}{%
+\begin{frame}
+  \frametitle{Summary}
+  \begin{itemize}
+  \item Exoplanets are abundant but exceedingly hard to detect.
+    \begin{itemize}
+    \item 1 to 50 percent of Sun-like stars host Earths
+    \item \emph{statistical improvements can have huge impact}
+    \end{itemize}
+  \item \emph{Search} involves extracting tiny, sparse signals from noisy data.
+    \begin{itemize}
+    \item both stellar and spacecraft-induced noise
+    \item make heavy use of Gaussians
+    \end{itemize}
+  \item \emph{Population inferences} require expensive noise propagation.
+    \begin{itemize}
+    \item hierarchical modeling
+    \end{itemize}
+  \end{itemize}
+\end{frame}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{The NASA \kepler\ and K2 Missions}
+  \begin{itemize}
+  \item Stared at $1.5\times 10^5$ stars for 4 years\ldots
+    \begin{itemize}
+    \item $7\times 10^4$ measurements per star
+    \item all data completely public
+    \end{itemize}
+  \item \ldots plus another $10^6$ (ish) for $80$ days (ish)
+  \item Looking for exoplanet \emph{transit signals}
+  \item Found \emph{thousands} of exoplanets.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The NASA \kepler\ and K2 Missions}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{kepler/750603main_Ball_Kepler_A8468_275_lg_blog_main_horizontal.jpg}
+  \includegraphics<2>[height=\figureheight]{kepler/Kepler_FOV_hiRes.jpg}
+  \includegraphics<3>[height=\figureheight]{kepler/FirstLightLogInvertedPink_wslbld2400.jpg}
+  \includegraphics<4>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<5>[height=\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<6>[height=\figureheight]{dfm/full_sample.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Earth-like transit signals}
+  \begin{itemize}
+  \item requires good alignment (percent-level)
+  \item Earth blocks $10^{-4}$ of the light from the Sun
+  \item it does this for 13 hours out of every 365.25 days
+  \item the Sun has stochastic variability with an amplitude larger than the signal
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reminder: $\chi^2$}
+  \begin{itemize}
+  \item Measures goodness (or badness) of fit.
+    \begin{itemize}
+    \item (Here $\chi^2$ is a scalar, not a distribution!)
+    \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+    \end{itemize}
+  \item It can be written as an inner product (with the noise inverse
+    covariance as metric), like a metric squared-distance!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reminder: $\chi^2$}
+  \begin{eqnarray}
+    \chi^2 &\equiv& \sum_i \frac{[y_i - m_i]^2}{\sigma_i^2}
+    \nonumber \\
+    \chi^2 &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m]
+    \nonumber \\
+    V &=& C
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reminder: $\chi^2$}
+  \begin{itemize}
+  \item $\transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $V$ encodes your beliefs about your (Gaussian) noise.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{itemize}
+  \item Multiple addititive sources of (Gaussian) noise? Add covariances.
+  \item Adding new components to the noise tensor $V$ is
+    equivalent to fitting for new noise processes and marginalizing
+    them out.
+  \item This is literally as trivial as it sounds.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing (Gaussian) noise}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + Q
+    \nonumber \\
+    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
+    \nonumber \\
+    Q &=& \mbox{variance tensor of additional noise}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Causal idea}
+  \begin{itemize}
+  \item If a star's behavior can be predicted confidently by
+    other stars, then that behavior must be being imprinted by
+    the spacecraft.
+  \item We are using these ideas to separate spacecraft-induced from
+    intrinsic stellar variability {\footnotesize (Wang \etal, arXiv:1508.01853;
+    Sch\"olkopf \etal, arXiv:1505.03036)}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Imagine that we believe that the spacecraft systematics
+    (noise) can be modeled as a sum of $M$ basis vectors.
+  \item If we can put a Gaussian prior on the linear amplitudes, we
+    can fully represent this noise by adding in a rank-$M$ covariance
+    matrix.
+  \item This is equivalent to fitting and marginalizing!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + B\cdot\Lambda\cdot\transpose{B}
+    \nonumber \\
+    B &=& \mbox{block of $M$ basis vectors}
+    \nonumber \\
+    \Lambda &=& \mbox{$M\times M$ prior variance; can $\rightarrow\infty$}
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $C + B\cdot\Lambda\cdot\transpose{B}$ encodes your beliefs
+    about your (Gaussian) noise, which now has a systematics
+    component.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp14.pdf}
+  \includegraphics<3>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp15.pdf}
+  \includegraphics<4>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp17.pdf}
+  \includegraphics<5>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp18.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exoplanet discovery {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-corr.pdf}
+  \includegraphics<2>[height=\figureheight]{1502.04715/figures-linear.pdf}
+  \includegraphics<3>[height=\figureheight]{1502.04715/figures-periodic.pdf}
+  \includegraphics<4>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<5>[height=\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<6>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{itemize}
+  \item Don't ``fit and subtract'' your systematics!
+  \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
+  \item You need to marginalize out the noise.
+  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ in $\ln L$ is
+    equivalent to fitting the noise simultaneously with your model $m$
+    and then marginalizing it out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussians are miraculous}
+  \begin{itemize}
+  \item ~[that is all]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar variability noise model}
+  \begin{eqnarray}
+    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
+    \nonumber \\
+    V &=& C + K
+    \nonumber \\
+    K_{ij} &=& K(|t_i - t_j|; \theta)
+    \nonumber
+  \end{eqnarray}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gaussian processes}
+  ~\hfill
+  \includegraphics<1>[height=0.8\figureheight]{george/ind-results.png}
+  \includegraphics<2>[height=0.8\figureheight]{george/gp-results.png}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item There are many applied-math tricks for making things much
+    faster than $N^{2.6}$.
+  \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
+  \item Marginalizing out the kernel hyperparameters $\theta$ is (in
+    general) very expensive.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellar noise model}
+  \begin{itemize}
+  \item Again, don't ``fit and subtract'' the stellar variability!
+  \item Model the variability by adding a Kernel matrix to the covariance matrix.
+  \item Again, using $C + K$ in $\ln L$ is equivalent to fitting the
+    stochastic variability simultaneously and then marginalizing it
+    out!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Principal limitation 1}
+  \begin{itemize}
+  \item Assumption of Gaussianity:
+    \begin{itemize}
+    \item outliers are death
+    \item variabilities are all skew
+    \item multiplicative noise?
+    \end{itemize}
+  \item Generalizaions are \emph{intractable} or evil.
+    \begin{itemize}
+    \item dictionary methods, other processes
+    \item the copula
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Principal limitation 2}
+  \begin{itemize}
+  \item Heuristic decisions
+    \begin{itemize}
+    \item model complexity
+    \item prior forms and hyper-parameters
+    \item detection thresholds
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\conclusions
+
+\begin{frame}
+  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
+  ~\hfill
+  \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
+  \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
+  \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
+  \includegraphics<4>[height=\figureheight]{1406.3020/results-rate.pdf}
+  \includegraphics<5>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\conclusions
+
+\end{document}
