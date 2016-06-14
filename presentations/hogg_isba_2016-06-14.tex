@@ -68,8 +68,8 @@
     \item all data completely public
     \end{itemize}
   \item \ldots plus another $10^6$ (ish) for $80$ days (ish)
-  \item Looking for exoplanet \emph{transit signals}
-  \item Found \emph{thousands} of exoplanets.
+  \item Looking for planet \emph{transit signals}
+  \item Found \emph{thousands of planets around other stars}
   \end{itemize}
 \end{frame}
 
@@ -94,67 +94,33 @@
   \end{itemize}
 \end{frame}
 
+%% Syntactical
+
 \begin{frame}
-  \frametitle{Reminder: $\chi^2$}
+  \frametitle{Search: assumptions}
   \begin{itemize}
-  \item Measures goodness (or badness) of fit.
+  \item There are three sources of noise:
     \begin{itemize}
-    \item (Here $\chi^2$ is a scalar, not a distribution!)
-    \item $\chi^2$ is related to the ln of a (Gaussian) likelihood.
+    \item shot noise, spacecraft variability, stellar variability
     \end{itemize}
-  \item It can be written as an inner product (with the noise inverse
-    covariance as metric), like a metric squared-distance!
+  \item These can be treated as additive and Gaussian.
+    \begin{itemize}
+    \item differ only in their covariance properties
+    \end{itemize}
+  \item We know what a planet transit looks like.
+    \begin{itemize}
+    \item it enters the model as the mean function of the Gaussian process
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Reminder: $\chi^2$}
-  \begin{eqnarray}
-    \chi^2 &\equiv& \sum_i \frac{[y_i - m_i]^2}{\sigma_i^2}
-    \nonumber \\
-    \chi^2 &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m]
-    \nonumber \\
-    V &=& C
-    \nonumber \\
-    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
-    \nonumber \\
-    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
-    \nonumber
-  \end{eqnarray}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Reminder: $\chi^2$}
+  \frametitle{Search: assumptions}
   \begin{itemize}
-  \item $\transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
-  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $-2\,\ln L = \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V$
+  \item $y$ is your data, $m$ is your model (of a planet signal!).
   \item $V$ encodes your beliefs about your (Gaussian) noise.
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Generalizing (Gaussian) noise}
-  \begin{itemize}
-  \item Multiple addititive sources of (Gaussian) noise? Add covariances.
-  \item Adding new components to the noise tensor $V$ is
-    equivalent to fitting for new noise processes and marginalizing
-    them out.
-  \item This is literally as trivial as it sounds.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Generalizing (Gaussian) noise}
-  \begin{eqnarray}
-    -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
-    \nonumber \\
-    V &=& C + Q
-    \nonumber \\
-    C_{ij} &\equiv& \sigma_i^2\,\delta_{ij}
-    \nonumber \\
-    Q &=& \mbox{variance tensor of additional noise}
-    \nonumber
-  \end{eqnarray}
 \end{frame}
 
 \begin{frame}
@@ -172,8 +138,8 @@
 \begin{frame}
   \frametitle{Systematic noise model}
   \begin{itemize}
-  \item Imagine that we believe that the spacecraft systematics
-    (noise) can be modeled as a sum of $M$ basis vectors.
+  \item Imagine that we believe that the spacecraft noise
+    can be modeled as a sum of $M$ basis vectors.
   \item If we can put a Gaussian prior on the linear amplitudes, we
     can fully represent this noise by adding in a rank-$M$ covariance
     matrix.
@@ -198,10 +164,13 @@
 \begin{frame}
   \frametitle{Systematic noise model}
   \begin{itemize}
-  \item $y$ is your data, $m$ is your model (of an exoplanet signal!).
+  \item $y$ is your data, $m$ is your model of the planet signal.
   \item $C + B\cdot\Lambda\cdot\transpose{B}$ encodes your beliefs
     about your (Gaussian) noise, which now has a systematics
     component.
+    \begin{itemize}
+    \item (non-stationary Gaussian process)
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -239,13 +208,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Gaussians are miraculous}
-  \begin{itemize}
-  \item ~[that is all]
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{Stellar variability noise model}
   \begin{eqnarray}
     -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
@@ -258,13 +220,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Gaussian processes}
-  ~\hfill
-  \includegraphics<1>[height=0.8\figureheight]{george/ind-results.png}
-  \includegraphics<2>[height=0.8\figureheight]{george/gp-results.png}
-\end{frame}
-
-\begin{frame}
   \frametitle{Implementation details}
   \begin{itemize}
   \item There are many applied-math tricks for making things much
@@ -272,17 +227,6 @@
   \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
   \item Marginalizing out the kernel hyperparameters $\theta$ is (in
     general) very expensive.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Stellar noise model}
-  \begin{itemize}
-  \item Again, don't ``fit and subtract'' the stellar variability!
-  \item Model the variability by adding a Kernel matrix to the covariance matrix.
-  \item Again, using $C + K$ in $\ln L$ is equivalent to fitting the
-    stochastic variability simultaneously and then marginalizing it
-    out!
   \end{itemize}
 \end{frame}
 
@@ -318,6 +262,23 @@
 \conclusions
 
 \begin{frame}
+  \frametitle{Population inferences: assumptions}
+  \begin{itemize}
+  \item We are given a catalog of exoplanets with no false positives.
+  \item We are also given a ``completeness'' or ``efficiency'' estimate as a function of parameters.
+  \item Planets are independently drawn from some True distribution and ``noisified''.
+    \begin{itemize}
+    \item True distribution is smooth
+    \item (``True'' $\equiv$ what would be measured with a \emph{far better experiment})
+    \end{itemize}
+  \item The catalog comes with proper uncertainty estimates.
+    \begin{itemize}
+    \item posterior samplings under an \emph{interim prior}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
   ~\hfill
   \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
@@ -325,6 +286,25 @@
   \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
   \includegraphics<4>[height=\figureheight]{1406.3020/results-rate.pdf}
   \includegraphics<5>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Population inferences: implementation notes}
+  \begin{itemize}
+  \item We did the low-level inference with an importance sampling.
+    \begin{itemize}
+    \item method pioneered by us (Hogg, Bovy, \& Myers 2010)
+    \item capitalizes on astronomers' love of samplings
+    \end{itemize}
+  \item We used Elliptical Slice Sampling to perform the high-level inference.
+    \begin{itemize}
+    \item (Murray \etal 2010)
+    \end{itemize}
+  \item New input catalogs are very different.
+    \begin{itemize}
+    \item A lot has changed since 2014!
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \conclusions
