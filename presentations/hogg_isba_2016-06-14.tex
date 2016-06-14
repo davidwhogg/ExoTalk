@@ -8,7 +8,7 @@
 
 % set paper size
 % 1.77778 is the ratio of 16 to 9
-\setlength{\paperheight}{2.5in} % going way small!
+\setlength{\paperheight}{2.75in} % going small!
 \setlength{\paperwidth}{1.77778\paperheight}
 % 1.33333 is the ratio of 4 to 3
 %\setlength{\paperheight}{3.0in} % way small!
@@ -34,10 +34,10 @@
 \begin{frame}
   \frametitle{Summary}
   \begin{itemize}
-  \item Exoplanets are abundant but exceedingly hard to detect.
+  \item Planets are abundant around other stars but exceedingly hard to detect.
     \begin{itemize}
     \item 1 to 50 percent of Sun-like stars host Earths
-    \item \emph{statistical improvements can have huge impact}
+    \item \emph{statistical improvements have huge impact}
     \end{itemize}
   \item \emph{Search} involves extracting tiny, sparse signals from noisy data.
     \begin{itemize}
@@ -124,6 +124,13 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Systematic noise {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
+  ~\hfill
+  \includegraphics<1>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp10.pdf}
+  \includegraphics<2>[trim=100 100 100 100, clip, height=\figureheight]{brownbag/brownbagp14.pdf}
+\end{frame}
+
+\begin{frame}
   \frametitle{Causal idea}
   \begin{itemize}
   \item If a star's behavior can be predicted confidently by
@@ -153,6 +160,8 @@
     -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
     \nonumber \\
     V &=& C + B\cdot\Lambda\cdot\transpose{B}
+    \nonumber \\
+    C &=& \mbox{diagonal photon-noise variance}
     \nonumber \\
     B &=& \mbox{block of $M$ basis vectors}
     \nonumber \\
@@ -229,7 +238,7 @@
     \item variabilities are all skew
     \item multiplicative noise?
     \end{itemize}
-  \item Generalizaions are \emph{intractable} or evil.
+  \item Generalizations are intractable or evil.
     \begin{itemize}
     \item dictionary methods, other processes
     \item the copula
@@ -244,9 +253,8 @@
   \begin{itemize}
   \item We are given a catalog of exoplanets with no false positives.
   \item We are also given a ``completeness'' or ``efficiency'' estimate as a function of parameters.
-  \item Planets are independently drawn from some True distribution and ``noisified''.
+  \item Planets are independently drawn from some smooth, True distribution and ``noisified''.
     \begin{itemize}
-    \item True distribution is smooth
     \item (``True'' $\equiv$ what would be measured with a \emph{far better experiment})
     \end{itemize}
   \item The catalog comes with proper uncertainty estimates.
@@ -267,16 +275,28 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Long-period planets}
+  \begin{itemize}
+  \item If a planet has such a long orbit that it transits only once,
+    the problem is much harder.
+    \begin{itemize}
+    \item must distinguish a single transit from a noise fluctuation
+    \item better noise models needed
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Population inferences: implementation notes}
   \begin{itemize}
   \item We did the low-level inference with an importance sampling.
     \begin{itemize}
-    \item method pioneered by us (Hogg, Bovy, \& Myers 2010)
-    \item capitalizes on astronomers' love of samplings
+    \item method pioneered by us {\footnotesize (Hogg, \etal, arXiv:1008.4146)}
+    \item capitalizes on astronomers' \emph{love of samplings}
     \end{itemize}
   \item We used Elliptical Slice Sampling to perform the high-level inference.
     \begin{itemize}
-    \item (Murray \etal 2010)
+    \item {\footnotesize (Murray \etal, arXiv:1001.0175)}
     \end{itemize}
   \item New input catalogs are very different.
     \begin{itemize}
