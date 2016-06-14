@@ -196,18 +196,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Systematic noise model}
-  \begin{itemize}
-  \item Don't ``fit and subtract'' your systematics!
-  \item Signals get distorted {\footnotesize (Foreman-Mackey \etal, 1502.04715)}
-  \item You need to marginalize out the noise.
-  \item Using $C + B\cdot\Lambda\cdot\transpose{B}$ in $\ln L$ is
-    equivalent to fitting the noise simultaneously with your model $m$
-    and then marginalizing it out!
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{Stellar variability noise model}
   \begin{eqnarray}
     -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
@@ -222,6 +210,7 @@
 \begin{frame}
   \frametitle{Implementation details}
   \begin{itemize}
+  \item Brute-force search in period-phase space, computing evidence for billions of hypotheses.
   \item There are many applied-math tricks for making things much
     faster than $N^{2.6}$.
   \item Use \project{george} {\footnotesize (Foreman-Mackey \etal)}.
@@ -231,9 +220,10 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Principal limitation 1}
+  \frametitle{Gaussianity}
   \begin{itemize}
-  \item Assumption of Gaussianity:
+  \item Gaussians are magic\ldots
+  \item \ldots but
     \begin{itemize}
     \item outliers are death
     \item variabilities are all skew
@@ -243,18 +233,6 @@
     \begin{itemize}
     \item dictionary methods, other processes
     \item the copula
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Principal limitation 2}
-  \begin{itemize}
-  \item Heuristic decisions
-    \begin{itemize}
-    \item model complexity
-    \item prior forms and hyper-parameters
-    \item detection thresholds
     \end{itemize}
   \end{itemize}
 \end{frame}
