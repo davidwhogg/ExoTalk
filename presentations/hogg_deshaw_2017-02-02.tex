@@ -21,14 +21,14 @@
 % import the next thing *after* the lengths and sizes
 \input{./hogg_presentation} % hogg standard colors
 
-\title{Finding exoplanets and characterizing their population}
-\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(SCDA \& NYU \& MPIA)}\\[1ex]
+\title{How rare are Earths? \\ And how common are Jupiters?}
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA \& Simons)}\\[1ex]
   \textsl{\footnotesize
     in collaboration with:
     Dan~Foreman-Mackey~\textsl{(UW)},
     Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
     Dun~Wang~\textsl{(NYU)}}}
-\date{ISBA / 2016 June 14}
+\date{D. E. Shaw / 2017 March 2}
 
 \newcommand{\conclusions}{%
 \begin{frame}
@@ -37,12 +37,12 @@
   \item Planets are abundant around other stars but exceedingly hard to detect.
     \begin{itemize}
     \item 1 to 50 percent of Sun-like stars host Earths
-    \item \emph{statistical improvements have huge impact}
+    \item long-period Jupiters and Saturns might be \emph{very} common
     \end{itemize}
   \item \emph{Search} involves extracting tiny, sparse signals from noisy data.
     \begin{itemize}
     \item both stellar and spacecraft-induced noise
-    \item make heavy use of Gaussians
+    \item \emph{engineering improvements have huge impact}
     \end{itemize}
   \item \emph{Population inferences} require expensive noise propagation.
     \begin{itemize}
@@ -83,6 +83,14 @@
   \includegraphics<5>[height=\figureheight]{1502.04715/figures-folded.pdf}
   \includegraphics<6>[height=\figureheight]{dfm/full_sample.pdf}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Exoplanet populations}
+  ~\hfill
+  \includegraphics[height=\figureheight]{1406.3020/results-radius.pdf}
+\end{frame}
+
+
 
 \begin{frame}
   \frametitle{Earth-like transit signals}
@@ -209,7 +217,7 @@
   \begin{eqnarray}
     -2\,\ln L &=& \transpose{[y - m]}\cdot V^{-1}\cdot [y - m] + \ln\det V
     \nonumber \\
-    V &=& C + K
+    V &=& C + B\cdot\Lambda\cdot\transpose{B} + K
     \nonumber \\
     K_{ij} &=& K(|t_i - t_j|; \theta)
     \nonumber
