@@ -60,6 +60,16 @@
 \conclusions
 
 \begin{frame}
+  \frametitle{Earth-like transit signals}
+  \begin{itemize}
+  \item requires good alignment (percent-level)
+  \item Earth blocks $10^{-4}$ of the light from the Sun
+  \item it does this for 13 hours out of every 365.25 days
+  \item the Sun has stochastic variability with an amplitude larger than the signal
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{The NASA \kepler\ and K2 Missions}
   \begin{itemize}
   \item Stared at $1.5\times 10^5$ stars for 4 years\ldots
@@ -81,7 +91,7 @@
   \includegraphics<3>[height=\figureheight]{kepler/FirstLightLogInvertedPink_wslbld2400.jpg}
   \includegraphics<4>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
   \includegraphics<5>[height=\figureheight]{1502.04715/figures-folded.pdf}
-  \includegraphics<6>[height=\figureheight]{dfm/full_sample.pdf}
+  \includegraphics<6>[height=\figureheight]{1607.08237/full_sample_plus_cands.pdf}
 \end{frame}
 
 \begin{frame}
@@ -89,20 +99,6 @@
   ~\hfill
   \includegraphics[height=\figureheight]{1406.3020/results-radius.pdf}
 \end{frame}
-
-
-
-\begin{frame}
-  \frametitle{Earth-like transit signals}
-  \begin{itemize}
-  \item requires good alignment (percent-level)
-  \item Earth blocks $10^{-4}$ of the light from the Sun
-  \item it does this for 13 hours out of every 365.25 days
-  \item the Sun has stochastic variability with an amplitude larger than the signal
-  \end{itemize}
-\end{frame}
-
-%% Syntactical
 
 \begin{frame}
   \frametitle{Search: assumptions}
@@ -204,12 +200,11 @@
 \begin{frame}
   \frametitle{Exoplanet discovery {\footnotesize (Foreman-Mackey \etal, 1502.04715)}}
   ~\hfill
-  \includegraphics<1>[height=\figureheight]{1502.04715/figures-corr.pdf}
-  \includegraphics<2>[height=\figureheight]{1502.04715/figures-linear.pdf}
-  \includegraphics<3>[height=\figureheight]{1502.04715/figures-periodic.pdf}
-  \includegraphics<4>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
-  \includegraphics<5>[height=\figureheight]{1502.04715/figures-folded.pdf}
-  \includegraphics<6>[height=\figureheight]{1502.04715/figures-candidates.pdf}
+  \includegraphics<1>[height=\figureheight]{1502.04715/figures-linear.pdf}
+  \includegraphics<2>[height=\figureheight]{1502.04715/figures-periodic.pdf}
+  \includegraphics<3>[height=\figureheight]{1502.04715/figures-de-trended.pdf}
+  \includegraphics<4>[height=\figureheight]{1502.04715/figures-folded.pdf}
+  \includegraphics<5>[height=\figureheight]{1502.04715/figures-candidates.pdf}
 \end{frame}
 
 \begin{frame}
@@ -289,12 +284,12 @@
     the problem is much harder.
     \begin{itemize}
     \item must distinguish a single transit from a noise fluctuation
-    \item better noise models needed
+    \item must model other kinds of ``data events''
     \end{itemize}
-  \item Find $2.0\pm 0.7$ long-period planets per star.
+  \item Find \emph{2.0$\pm$0.7 long-period planets per star}.
     \begin{itemize}
     \item periods 2 to 25\,yr
-    \item radius ratios 0.02 to 0.2
+    \item radii 0.2 to 2\,$R_{\mathrm Jup}$
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -315,13 +310,11 @@
     \item method pioneered by us {\footnotesize (Hogg, \etal, arXiv:1008.4146)}
     \item capitalizes on astronomers' \emph{love of samplings}
     \end{itemize}
-  \item We used Elliptical Slice Sampling to perform the high-level inference.
-    \begin{itemize}
-    \item {\footnotesize (Murray \etal, arXiv:1001.0175)}
-    \end{itemize}
-  \item New input catalogs are very different.
+  \item We used custom-built MCMC samplers for the inference.
+  \item New input catalogs are very different at short periods.
     \begin{itemize}
     \item A lot has changed since 2014!
+    \item rates for Earth-like planets have gone up
     \end{itemize}
   \end{itemize}
 \end{frame}
