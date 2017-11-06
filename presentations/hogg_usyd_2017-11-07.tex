@@ -21,33 +21,26 @@
 % import the next thing *after* the lengths and sizes
 \input{./hogg_presentation} % hogg standard colors
 
-\title{How rare are Earths? \\ And how common are Jupiters?}
-\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA \& Simons)}\\[1ex]
+\title{Finding planets in \kepler\ and K2 data}
+\author[David W. Hogg (NYU)]{David W. Hogg \textsl{(NYU \& MPIA \& Flatiron)}\\[1ex]
   \textsl{\footnotesize
     in collaboration with:
-    Dan~Foreman-Mackey~\textsl{(UW)},
+    Dan~Foreman-Mackey~\textsl{(Flatiron)},
     Bernhard~Sch\"olkopf~\textsl{(MPI-IS)},
     Dun~Wang~\textsl{(NYU)}}}
-\date{MIT / 2017-10-10}
+\date{Hunstead Lecture / 2017-11-07}
 
 \newcommand{\conclusions}{%
 \begin{frame}
   \frametitle{Summary}
   \begin{itemize}
   \item Planets are abundant around other stars but exceedingly hard to detect.
-    \begin{itemize}
-    \item 1 to 50 percent of Sun-like stars host Earths
-    \item long-period Jupiters and Saturns might be \emph{very} common
-    \end{itemize}
-  \item \emph{Search} involves extracting tiny, sparse signals from noisy data.
+  \item Search involves extracting tiny, sparse signals from noisy data.
     \begin{itemize}
     \item both stellar and spacecraft-induced noise
     \item \emph{engineering improvements have huge impact}
     \end{itemize}
-  \item \emph{Population inferences} require expensive noise propagation.
-    \begin{itemize}
-    \item hierarchical modeling
-    \end{itemize}
+  \item arXiv:1502.04715, arXiv:1508.01853, arXiv:1710.11136
   \end{itemize}
 \end{frame}}
 
@@ -58,13 +51,6 @@
 \end{frame}
 
 \conclusions
-
-\begin{frame}
-  \frametitle{RIP Senior House}
-  \begin{itemize}
-  \item Only life can kill you!
-  \end{itemize}
-\end{frame}
 
 \begin{frame}
   \frametitle{The NASA \kepler\ and K2 Missions}
@@ -97,8 +83,6 @@
   \includegraphics[height=\figureheight]{1406.3020/results-radius.pdf}
 \end{frame}
 
-
-
 \begin{frame}
   \frametitle{Earth-like transit signals}
   \begin{itemize}
@@ -108,8 +92,6 @@
   \item the Sun has stochastic variability with an amplitude larger than the signal
   \end{itemize}
 \end{frame}
-
-%% Syntactical
 
 \begin{frame}
   \frametitle{Search: assumptions}
@@ -167,6 +149,18 @@
     matrix.
   \item This is equivalent to fitting and marginalizing!
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Systematic noise model}
+  \begin{eqnarray}
+    y = m + B\cdot x + \mbox{photon noise}
+    \nonumber \\
+    p(x) = N(x\given 0, \Lambda)
+    \nonumber \\
+    p(y\given m) = \int p(y\given m, x)\,\dd x
+  \end{eqnarray}
+  \ldots and the convolution of a Gaussian with a Gaussian is a Gaussian.
 \end{frame}
 
 \begin{frame}
@@ -235,11 +229,10 @@
   \frametitle{Implementation details}
   \begin{itemize}
   \item Brute-force search in period-phase space, computing evidence for billions of hypotheses.
-  \item There are many applied-math tricks for making things much
-    faster than $N^{2.6}$.
+  \item There are applied-math tricks for making factorizations faster than $N^{2.6}$.
+  \item There are applied-math tricks for updating matrix factorizations.
   \item Use \project{george} or \project{celerite} {\footnotesize (Foreman-Mackey \etal)}.
-  \item Marginalizing out the kernel hyperparameters $\theta$ is (in
-    general) very expensive.
+  \item Marginalizing out the kernel hyperparameters $\theta$ is (in general) very expensive.
   \end{itemize}
 \end{frame}
 
@@ -257,65 +250,6 @@
     \begin{itemize}
     \item dictionary methods, other processes
     \item the copula
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\conclusions
-
-\begin{frame}
-  \frametitle{Population inferences: assumptions}
-  \begin{itemize}
-  \item We are given a catalog of exoplanets with no false positives.
-  \item We are also given a ``completeness'' or ``efficiency'' estimate as a function of parameters.
-  \item Planets are independently drawn from some smooth, True distribution and ``noisified''.
-    \begin{itemize}
-    \item (``True'' $\equiv$ what would be measured with a \emph{far better experiment})
-    \end{itemize}
-  \item The catalog comes with proper uncertainty estimates.
-    \begin{itemize}
-    \item posterior samplings under an \emph{interim prior}
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Exoplanet populations {\footnotesize (Foreman-Mackey \etal, arXiv:1406.3020)}}
-  ~\hfill
-  \includegraphics<1>[height=\figureheight]{1406.3020/results-results.pdf}
-  \includegraphics<2>[height=\figureheight]{1406.3020/results-period.pdf}
-  \includegraphics<3>[height=\figureheight]{1406.3020/results-radius.pdf}
-  \includegraphics<4>[height=\figureheight]{1406.3020/results-rate.pdf}
-  \includegraphics<5>[width=0.8\textwidth]{1406.3020/figures-comparison.pdf}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Long-period planets}
-  \begin{itemize}
-  \item If a planet has such a long orbit that it transits only once,
-    the problem is much harder.
-    \begin{itemize}
-    \item must distinguish a single transit from a noise fluctuation
-    \item better noise models needed
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Population inferences: implementation notes}
-  \begin{itemize}
-  \item We did the low-level inference with an importance sampling.
-    \begin{itemize}
-    \item method pioneered by us {\footnotesize (Hogg, \etal, arXiv:1008.4146)}
-    \item capitalizes on astronomers' \emph{love of samplings}
-    \end{itemize}
-  \item We used Elliptical Slice Sampling to perform the high-level inference.
-    \begin{itemize}
-    \item {\footnotesize (Murray \etal, arXiv:1001.0175)}
-    \end{itemize}
-  \item New input catalogs are very different.
-    \begin{itemize}
-    \item A lot has changed since 2014!
     \end{itemize}
   \end{itemize}
 \end{frame}
